@@ -82,6 +82,7 @@ export default function Home() {
     };
 
     try {
+      // Execute both operations and extract just the response
       const response = await Promise.all([
         simulateLoadingStages(),
         fetch('/api/generate', {
@@ -90,7 +91,7 @@ export default function Home() {
           body: JSON.stringify({ brandName, brandInfo })
         })
       ]).then(([_, res]) => res);
-      
+
       // Check for HTTP errors first
       if (!response.ok) {
         const errorData = await response.json();
