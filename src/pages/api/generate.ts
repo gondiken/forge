@@ -24,11 +24,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const { brandName, brandInfo } = req.body;
+  console.log('Starting request processing for brand:', brandName);
 
   try {
+    console.log('Reading base template...');
     const baseJsonPath = path.join(process.cwd(), 'src', 'templates', 'baseTemplate.json');
-    const baseTemplate = await fs.readFile(baseJsonPath, 'utf-8').then(JSON.parse).catch(() => ({}));
+    const baseTemplate = await fs.readFile(baseJsonPath, 'utf-8').then(JSON.parse).catch((err) => {
+      console.error('Error reading base template:', err);
+      console.log('Base template path:', baseJsonPath);
+      return {};
+    });
 
+    console.log('Calling Deepseek API for brand tone...');
     const brandToneRes = await openai.chat.completions.create({
       messages: [
         { role: 'system', content: brandTonePrompt },
@@ -36,14 +43,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ],
       model: 'deepseek-chat',
     });
+    console.log('Brand tone API response received');
 
-    // Add null check for message content
     const brandToneContent = brandToneRes.choices[0].message.content;
     if (!brandToneContent) {
-      throw new Error('Failed to generate brand tone analysis');
+      throw new Error('Empty response from brand tone API');
     }
+    console.log('Raw brand tone content:', brandToneContent);
 
     const brandTone = JSON.parse(cleanJsonString(brandToneContent));
+    console.log('Parsed brand tone data successfully');
 
     const enhancedContext = `
 Brand: ${brandName}
@@ -56,6 +65,7 @@ Brand Analysis Results:
 - Words to Avoid: ${brandTone.wordsToAvoid}
     `.trim();
 
+    console.log('Making parallel API calls for weblayer and emails...');
     const [weblayerRes, emailRes] = await Promise.all([
       openai.chat.completions.create({
         messages: [
@@ -72,33 +82,30 @@ Brand Analysis Results:
         model: 'deepseek-chat',
       })
     ]);
+    console.log('Parallel API calls completed');
 
-    // Add null checks for other responses
     const weblayerContent = weblayerRes.choices[0].message.content;
     const emailContent = emailRes.choices[0].message.content;
+    
+    console.log('Raw weblayer content:', weblayerContent);
+    console.log('Raw email content:', emailContent);
 
     if (!weblayerContent || !emailContent) {
-      throw new Error('Failed to generate weblayer or email content');
+      throw new Error('Empty response from weblayer or email API');
     }
 
     const weblayer = JSON.parse(cleanJsonString(weblayerContent));
     const emails = JSON.parse(cleanJsonString(emailContent));
+    console.log('Successfully parsed weblayer and email data');
 
     const finalJson = replacePlaceholders(baseTemplate, {
-      brand: {
-        name: brandName
-      },
+      brand: { name: brandName },
       weblayer,
       emails
     });
+    console.log('Replacements completed successfully');
 
-    const outputDir = path.join(process.cwd(), 'outputs');
-    await fs.mkdir(outputDir, { recursive: true });
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const outputPath = path.join(outputDir, `${brandName}-${timestamp}.json`);
-    await fs.writeFile(outputPath, JSON.stringify(finalJson, null, 2));
-
-    res.status(200).json({
+    return res.status(200).json({
       brandTone,
       fullJson: finalJson,
       rawResponses: {
@@ -108,8 +115,12 @@ Brand Analysis Results:
       }
     });
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ 
+    console.error('Detailed error:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      error: error // Log the full error object
+    });
+    return res.status(500).json({ 
       error: 'Failed to generate assets',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
