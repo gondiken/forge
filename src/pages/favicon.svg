@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <!-- Background with subtle gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E0B0FF;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#9F6B99;stop-opacity:0.2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base circle taking up more space -->
+  <circle cx="40" cy="40" r="39" fill="url(#bgGradient)" stroke="#9F6B99" stroke-width="1"/>
+  
+  <!-- Larger F composition -->
+  <g transform="translate(40 40) rotate(-10) scale(1.4)">
+    <!-- Main F shape -->
+    <path d="M -17 -22 
+             L 4 -22 
+             C 12 -22 15 -18 15 -11
+             L 15 -7
+             L -3 -7
+             L -3 0
+             L 11 0
+             C 11 0 11 4 11 4
+             L -3 4
+             L -3 22
+             L -17 22
+             Z" 
+          fill="#9F6B99"/>
+    
+    <!-- Larger decorative elements -->
+    <circle cx="11" cy="-15" r="3" fill="#E0B0FF" opacity="0.8"/>
+    <circle cx="8" cy="11" r="4" fill="#E0B0FF" opacity="0.6"/>
+  </g>
+
+  <!-- Repositioned accent points -->
+  <circle cx="63" cy="35" r="2.5" fill="#E0B0FF" opacity="0.6"/>
+  <circle cx="55" cy="55" r="1.5" fill="#E0B0FF" opacity="0.5"/>
+  <circle cx="22" cy="48" r="1.5" fill="#E0B0FF" opacity="0.4"/>
+</svg>
