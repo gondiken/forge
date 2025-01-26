@@ -10,7 +10,7 @@ type LoadingStage =
   | 'generating-campaign'
   | 'finalizing';
 
-
+// Interface defining the structure of our brand tone analysis results
 interface BrandTone {
   missionStatement: string;
   toneOfVoice: string;
@@ -18,6 +18,7 @@ interface BrandTone {
   wordsToAvoid: string;
 }
 
+// Interface defining the overall results structure from our API
 interface Results {
   brandTone: BrandTone;
   fullJson: Record<string, unknown>;
@@ -36,7 +37,7 @@ export default function Home() {
   const [results, setResults] = useState<Results | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Convert loading stages into user-friendly messages
+  // Convert loading stages into user-friendly messages for display
   const getLoadingText = (stage: LoadingStage) => {
     switch (stage) {
       case 'analyzing-brand':
@@ -63,7 +64,7 @@ export default function Home() {
     // Simulate loading stages with the ability to abort
     const simulateLoadingStages = async () => {
       try {
-        // We show each stage for 3 seconds unless aborted
+        // Show each stage for 3 seconds unless aborted
         for (const stage of ['analyzing-brand', 'generating-weblayer', 'generating-campaign'] as LoadingStage[]) {
           setLoadingStage(stage);
           await new Promise((resolve, reject) => {
@@ -76,18 +77,20 @@ export default function Home() {
         }
         setLoadingStage('finalizing');
       } catch (error) {
-        if (error.message !== 'aborted') throw error;
+        if ((error as Error).message !== 'aborted') throw error;
       }
     };
 
     try {
-      // Start both the loading simulation and API call in parallel
-      const loadingPromise = simulateLoadingStages().catch(console.error);
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ brandName, brandInfo })
-      });
+      // Execute both the loading simulation and API call in parallel
+      const [_, response] = await Promise.all([
+        simulateLoadingStages(),
+        fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ brandName, brandInfo })
+        })
+      ]);
 
       // Check for HTTP errors first
       if (!response.ok) {
@@ -107,8 +110,8 @@ export default function Home() {
 
       setResults({
         ...data,
-        brandTone,  // This is our parsed version
-        rawResponses: data.rawResponses  // Store the raw responses
+        brandTone,  // Store parsed version
+        rawResponses: data.rawResponses  // Store raw responses for download
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -118,25 +121,24 @@ export default function Home() {
     }
   };
 
-  // Raw LLM response JSON downloads
+  // Handle downloads of raw LLM response JSONs
   const handleRawDownload = (type: 'brandTone' | 'weblayer' | 'emails') => {
-      if (!results?.rawResponses?.[type]) return;
-      
-      const blob = new Blob([results.rawResponses[type]], {
-        type: 'text/plain'  // Using text/plain since these are raw LLM responses
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${brandName.toLowerCase()}-${type}-raw.txt`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+    if (!results?.rawResponses?.[type]) return;
+    
+    const blob = new Blob([results.rawResponses[type]], {
+      type: 'text/plain'  // Using text/plain since these are raw LLM responses
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${brandName.toLowerCase()}-${type}-raw.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
-
-  // Handle JSON file download
+  // Handle download of complete JSON asset library
   const handleDownload = () => {
     if (!results?.fullJson) return;
     
@@ -253,7 +255,7 @@ export default function Home() {
                   />
                 </div>
 
-                {/* Download Button */}
+                {/* Download Buttons Section */}
                 <button
                   onClick={handleDownload}
                   className="flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
@@ -286,7 +288,6 @@ export default function Home() {
                     Raw Emails Output
                   </button>
                 </div>
-
               </div>
             </div>
           )}
