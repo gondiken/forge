@@ -1,0 +1,17 @@
+src/
+  components/
+    ContentBox.tsx
+  pages/
+    _app.tsx
+    index.tsx
+    api/
+      generate.ts
+      replacePlaceholders.ts
+  prompts/
+    brandTone.ts
+    retentionEmails.ts
+    zeroParty.ts
+  styles/
+    globals.css
+  templates/
+    baseTemplate.json

@@ -1,0 +1,141 @@
+{
+  "timestamp": "2025-01-22T15:03:54.248Z",
+  "brand": {
+    "name": "Banana Republic",
+    "info": "Banana Republic fashion brand"
+  },
+  "brandTone": "1. Tone of voice: sophisticated, modern, polished, aspirational, confident, refined, elegant, timeless, adventurous, cosmopolitan\n\n2. Favorite keywords: style, quality, craftsmanship, timeless, modern, sophistication, adventure, global, refined, wardrobe, elevate, versatile\n\n3. Words to avoid: cheap, outdated, basic, casual, simple, loud, flashy, tacky, immature, unrefined",
+  "weblayer": {
+    "questions": [
+      {
+        "id": "q1",
+        "category": "demographic",
+        "text": "What is your age range?",
+        "options": [
+          "18-24",
+          "25-34",
+          "35-44",
+          "45+"
+        ],
+        "personalization_use_cases": [
+          "Age-specific product recommendations",
+          "Targeted email campaigns"
+        ]
+      },
+      {
+        "id": "q2",
+        "category": "preference",
+        "text": "What is your favorite clothing style?",
+        "options": [
+          "👔 Classic",
+          "👗 Modern",
+          "🧥 Casual",
+          "🕶️ Trendy"
+        ],
+        "personalization_use_cases": [
+          "Personalized product suggestions",
+          "Customized homepage display"
+        ]
+      },
+      {
+        "id": "q3",
+        "category": "intent",
+        "text": "What brings you to our site today?",
+        "options": [
+          "🛍️ Shopping",
+          "🎁 Gift ideas",
+          "👀 Browsing",
+          "📰 Inspiration"
+        ],
+        "personalization_use_cases": [
+          "Tailored content display",
+          "Dynamic product sorting"
+        ]
+      },
+      {
+        "id": "q4",
+        "category": "behavior",
+        "text": "How often do you shop for clothes?",
+        "options": [
+          "Weekly",
+          "Monthly",
+          "Seasonally",
+          "Rarely"
+        ],
+        "personalization_use_cases": [
+          "Frequency-based promotions",
+          "Loyalty program targeting"
+        ]
+      }
+    ]
+  },
+  "emails": {
+    "emails": {
+      "inspiration": {
+        "subject_line": "Rediscover Your Style Journey",
+        "preheader": "You've made great progress in refining your wardrobe. Let's keep elevating your style!",
+        "hero_image_description": "A stylish individual confidently walking through a modern cityscape, showcasing a curated Banana Republic outfit.",
+        "greeting": "Hi {{customer.first_name}},",
+        "first_paragraph": "We noticed you haven't been exploring your style with us lately. Remember when you first discovered Banana Republic and the excitement of finding pieces that truly reflected your personality? Let's reignite that passion and continue building a wardrobe that inspires confidence.",
+        "second_title": "Your Style Evolution Awaits",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.highest_value_achieved}}",
+            "template": "You've already invested ${{customer.highest_value_achieved}} in creating a wardrobe that reflects your unique style.",
+            "fallback": "You've already invested in creating a wardrobe that reflects your unique style."
+          },
+          "second": {
+            "metric": "{{customer.benefits_unused}}",
+            "template": "You have {{customer.benefits_unused}} exclusive benefits waiting to be used to enhance your style.",
+            "fallback": "You have exclusive benefits waiting to be used to enhance your style."
+          }
+        }
+      },
+      "nostalgia": {
+        "subject_line": "Your Style Legacy with Us",
+        "preheader": "Celebrate the timeless pieces you've added to your wardrobe over the years.",
+        "hero_image_description": "A cozy, elegant living room with a curated collection of Banana Republic pieces displayed on a vintage wardrobe.",
+        "greeting": "Hi {{customer.first_name}},",
+        "first_paragraph": "We've cherished being part of your style journey. From your first purchase to your most recent, each piece has been carefully chosen to reflect your timeless taste. Let's continue building on this legacy together.",
+        "second_title": "A Partnership in Style",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.relationship_value}}",
+            "template": "Over the years, you've added ${{customer.relationship_value}} worth of timeless pieces to your wardrobe.",
+            "fallback": "Over the years, you've added timeless pieces to your wardrobe."
+          },
+          "second": {
+            "metric": "{{customer.last_purchase_date}}",
+            "template": "Your last purchase on {{customer.last_purchase_date}} was a great addition to your collection.",
+            "fallback": "Your last purchase was a great addition to your collection."
+          }
+        }
+      },
+      "social_proof": {
+        "subject_line": "Join the Style Revolution",
+        "preheader": "See how our community is transforming their wardrobes with Banana Republic.",
+        "hero_image_description": "A vibrant group of stylish individuals at a social event, all wearing Banana Republic outfits.",
+        "greeting": "Hi {{customer.first_name}},",
+        "first_paragraph": "Our community of style enthusiasts is growing every day, and we'd love for you to continue being a part of it. Discover how others are elevating their wardrobes and find inspiration for your next look.",
+        "second_title": "Collective Style Excellence",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.community_rank}}",
+            "template": "You're among the top {{customer.community_rank}}% of our style community.",
+            "fallback": "You're among the top members of our style community."
+          },
+          "second": {
+            "metric": "{{customer.engagement_score}}",
+            "template": "With an engagement score of {{customer.engagement_score}}, you're a valued member of our style family.",
+            "fallback": "You're a valued member of our style family."
+          }
+        }
+      }
+    },
+    "metadata": {
+      "version": "1.0",
+      "generated_at": "2023-10-05T14:30:00Z",
+      "brand_name": "Banana Republic"
+    }
+  }
+}

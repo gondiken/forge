@@ -1,0 +1,129 @@
+{
+  "timestamp": "2025-01-22T16:38:44.402Z",
+  "brand": {
+    "name": "G-Star",
+    "info": "G-Star the fashion brand"
+  },
+  "brandTone": "{\n  \"missionStatement\": \"G-Star is a pioneering fashion brand that combines raw denim with innovative design to create unique, high-quality clothing. The brand is committed to sustainability, pushing the boundaries of fashion while respecting the environment. G-Star empowers individuals to express their individuality through bold, cutting-edge styles.\",\n  \"toneOfVoice\": \"bold, innovative, edgy, confident, rebellious, sustainable, creative, authentic, modern, daring, progressive, experimental, forward-thinking, unconventional, fearless\",\n  \"favoriteKeywords\": \"denim, innovation, sustainability, raw, design, individuality, bold, cutting-edge, quality, creativity, authenticity, modern, progressive, experimental, fearless\",\n  \"wordsToAvoid\": \"basic, traditional, outdated, simple, generic, ordinary, conformist, mainstream, predictable, uninspired, dull, conventional, safe, imitative, derivative\"\n}",
+  "weblayer": {
+    "questions": [
+      {
+        "id": "q1",
+        "category": "preference",
+        "text": "What type of clothing do you shop for most?",
+        "options": [
+          "👖 Denim; 🧥 Outerwear; 👕 Tops; 👟 Footwear"
+        ],
+        "personalization_use_cases": [
+          "Product recommendations",
+          "Email campaign targeting"
+        ]
+      },
+      {
+        "id": "q2",
+        "category": "intent",
+        "text": "What is your primary reason for visiting today?",
+        "options": [
+          "🛍️ New arrivals; 🔍 Specific item; 💡 Inspiration; 🎁 Gift shopping"
+        ],
+        "personalization_use_cases": [
+          "Dynamic homepage content",
+          "Personalized offers"
+        ]
+      },
+      {
+        "id": "q3",
+        "category": "demographic",
+        "text": "What is your age group?",
+        "options": [
+          "18-24; 25-34; 35-44; 45+"
+        ],
+        "personalization_use_cases": [
+          "Targeted promotions",
+          "Age-specific collections"
+        ]
+      },
+      {
+        "id": "q4",
+        "category": "behavior",
+        "text": "How often do you shop for fashion online?",
+        "options": [
+          "🛒 Weekly; 🛍️ Monthly; 🛒 Every few months; 🛍️ Rarely"
+        ],
+        "personalization_use_cases": [
+          "Loyalty program offers",
+          "Re-engagement campaigns"
+        ]
+      }
+    ]
+  },
+  "emails": {
+    "emails": {
+      "inspiration": {
+        "subject_line": "Reignite Your Style Journey with G-Star",
+        "preheader": "Remember when you first discovered G-Star? Let's rediscover that passion together.",
+        "hero_image_description": "A bold, urban streetwear look featuring G-Star's latest collection, styled with confidence and attitude.",
+        "greeting": "Hi {{customer.first_name}},",
+        "first_paragraph": "We noticed you haven't been exploring your G-Star wardrobe lately. We get it—life gets busy. But your unique style deserves to shine. Let's reignite that spark and help you stand out like only G-Star can.",
+        "second_title": "Your Style, Your Statement",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.highest_value_achieved}}",
+            "template": "You've already created {{customer.highest_value_achieved}} unforgettable looks with G-Star.",
+            "fallback": "You've already created countless unforgettable looks with G-Star."
+          },
+          "second": {
+            "metric": "{{customer.potential_savings}}",
+            "template": "With exclusive offers, you could save {{customer.potential_savings}} on your next statement piece.",
+            "fallback": "With exclusive offers, you could save big on your next statement piece."
+          }
+        }
+      },
+      "nostalgia": {
+        "subject_line": "Your G-Star Story Continues",
+        "preheader": "From your first G-Star piece to now—let's keep making history.",
+        "hero_image_description": "A timeless denim jacket from G-Star's archive, paired with modern accessories, symbolizing enduring style.",
+        "greeting": "Hey {{customer.first_name}},",
+        "first_paragraph": "We’ve been part of your style journey since {{customer.last_purchase_date}}, and we’re so grateful for that. Your loyalty means the world to us. Let’s keep building on that legacy with pieces that inspire confidence and individuality.",
+        "second_title": "Timeless Style, Timeless You",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.relationship_value}}",
+            "template": "Over the years, you've invested {{customer.relationship_value}} in creating a wardrobe that’s uniquely yours.",
+            "fallback": "Over the years, you've invested in creating a wardrobe that’s uniquely yours."
+          },
+          "second": {
+            "metric": "{{customer.lifetime_value}}",
+            "template": "Your G-Star collection is worth {{customer.lifetime_value}}—let’s keep it growing.",
+            "fallback": "Your G-Star collection is priceless—let’s keep it growing."
+          }
+        }
+      },
+      "social_proof": {
+        "subject_line": "Join the G-Star Movement",
+        "preheader": "Your G-Star community is thriving—don’t miss out on the latest trends and exclusives.",
+        "hero_image_description": "A vibrant group of G-Star enthusiasts showcasing their favorite pieces in an urban setting.",
+        "greeting": "Hi {{customer.first_name}},",
+        "first_paragraph": "Your G-Star community is buzzing with inspiration, and we’d love for you to be part of it. From exclusive drops to style tips, there’s so much to explore. Let’s reconnect and keep your wardrobe as bold as your personality.",
+        "second_title": "Be Part of Something Bigger",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.community_rank}}",
+            "template": "You’re among the top {{customer.community_rank}}% of G-Star enthusiasts—let’s keep that momentum going.",
+            "fallback": "You’re among the top G-Star enthusiasts—let’s keep that momentum going."
+          },
+          "second": {
+            "metric": "{{customer.engagement_score}}",
+            "template": "With an engagement score of {{customer.engagement_score}}, you’re a key part of our community.",
+            "fallback": "You’re a key part of our G-Star community."
+          }
+        }
+      }
+    },
+    "metadata": {
+      "version": "1.0",
+      "generated_at": "2023-10-05T14:30:00Z",
+      "brand_name": "G-Star"
+    }
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "timestamp": "2025-01-22T15:38:22.497Z",
+  "brand": {
+    "name": "Banana Republic",
+    "info": "Banana Republic fashion brand"
+  },
+  "brandTone": "{\n  \"missionStatement\": \"Banana Republic is a global lifestyle brand that offers modern, versatile, and high-quality clothing and accessories. The brand is dedicated to inspiring confidence and self-expression through timeless designs that blend sophistication with everyday functionality. Banana Republic aims to create a positive impact by embracing sustainability and inclusivity in its collections and practices.\",\n  \"toneOfVoice\": \"sophisticated, modern, confident, approachable, timeless, inclusive, aspirational, warm\",\n  \"favoriteKeywords\": \"modern, timeless, quality, versatile, confidence, sustainability, inclusivity, style, sophistication, everyday\",\n  \"wordsToAvoid\": \"cheap, outdated, basic, complicated, flashy, impractical, exclusive, over-the-top\"\n}",
+  "weblayer": {
+    "questions": [
+      {
+        "id": "demographic_1",
+        "category": "demographic",
+        "text": "What is your age range?",
+        "options": [
+          "18-24",
+          "25-34",
+          "35-44",
+          "45+"
+        ],
+        "personalization_use_cases": [
+          "Tailor product recommendations",
+          "Segment marketing campaigns"
+        ]
+      },
+      {
+        "id": "preference_1",
+        "category": "preference",
+        "text": "What is your favorite style?",
+        "options": [
+          "👔 Classic",
+          "👗 Modern",
+          "🧥 Casual",
+          "🕶️ Trendy"
+        ],
+        "personalization_use_cases": [
+          "Curate homepage content",
+          "Personalize email offers"
+        ]
+      },
+      {
+        "id": "intent_1",
+        "category": "intent",
+        "text": "What are you shopping for today?",
+        "options": [
+          "👕 Tops",
+          "👖 Bottoms",
+          "👞 Shoes",
+          "👜 Accessories"
+        ],
+        "personalization_use_cases": [
+          "Highlight relevant products",
+          "Optimize navigation"
+        ]
+      },
+      {
+        "id": "behavior_1",
+        "category": "behavior",
+        "text": "How often do you shop with us?",
+        "options": [
+          "🛒 First time",
+          "🛍️ Occasionally",
+          "💳 Frequently",
+          "🌟 Loyal customer"
+        ],
+        "personalization_use_cases": [
+          "Offer loyalty rewards",
+          "Provide tailored discounts"
+        ]
+      }
+    ]
+  },
+  "emails": {
+    "emails": {
+      "inspiration": {
+        "subject_line": "Rediscover Your Style Journey",
+        "preheader": "Remember when you first fell in love with Banana Republic? Let's reignite that passion.",
+        "hero_image_description": "A stylish individual confidently walking through a bustling city, wearing a perfectly tailored Banana Republic outfit.",
+        "greeting": "Hi {{customer.first_name}},",
+        "first_paragraph": "We noticed you haven't been as active with us lately. At Banana Republic, we believe in timeless style and effortless elegance. Let's reconnect and explore how we can help you achieve your fashion goals.",
+        "second_title": "Your Style, Elevated",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.highest_value_achieved}}",
+            "template": "You've achieved {{customer.highest_value_achieved}} in style milestones with us.",
+            "fallback": "You've achieved so much in your style journey with us."
+          },
+          "second": {
+            "metric": "{{customer.potential_savings}}",
+            "template": "You could save {{customer.potential_savings}} on your next purchase.",
+            "fallback": "Exclusive savings await you on your next purchase."
+          }
+        }
+      },
+      "nostalgia": {
+        "subject_line": "Celebrating Our Fashion Journey Together",
+        "preheader": "From your first purchase to now, let's cherish the moments we've shared.",
+        "hero_image_description": "A cozy, elegant living room with a Banana Republic catalog on the coffee table, symbolizing a long-standing relationship.",
+        "greeting": "Hi {{customer.first_name}},",
+        "first_paragraph": "We've shared so many stylish moments together. At Banana Republic, we value the trust you've placed in us. Let's continue this journey and explore new ways to enhance your wardrobe.",
+        "second_title": "Timeless Style, Lasting Memories",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.relationship_value}}",
+            "template": "Your relationship with us is valued at {{customer.relationship_value}}.",
+            "fallback": "Your relationship with us is invaluable."
+          },
+          "second": {
+            "metric": "{{customer.lifetime_value}}",
+            "template": "You've enjoyed {{customer.lifetime_value}} in benefits with us.",
+            "fallback": "You've enjoyed numerous benefits with us over the years."
+          }
+        }
+      },
+      "social_proof": {
+        "subject_line": "Join the Style Revolution",
+        "preheader": "Be part of a community that values timeless elegance and modern sophistication.",
+        "hero_image_description": "A vibrant group of stylish individuals at a social event, all wearing Banana Republic outfits, showcasing community and belonging.",
+        "greeting": "Hi {{customer.first_name}},",
+        "first_paragraph": "We noticed you haven't been as active with us lately. At Banana Republic, we're more than just a brand; we're a community. Let's reconnect and explore how we can help you shine in every occasion.",
+        "second_title": "Together in Style",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.community_rank}}",
+            "template": "You're ranked {{customer.community_rank}} in our style community.",
+            "fallback": "You're a valued member of our style community."
+          },
+          "second": {
+            "metric": "{{customer.engagement_score}}",
+            "template": "Your engagement score is {{customer.engagement_score}}.",
+            "fallback": "Your engagement with our community is highly appreciated."
+          }
+        }
+      }
+    },
+    "metadata": {
+      "version": "1.0",
+      "generated_at": "2023-10-05T14:30:00Z",
+      "brand_name": "Banana Republic"
+    }
+  }
+}

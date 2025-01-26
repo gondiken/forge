@@ -1,0 +1,134 @@
+{
+  "timestamp": "2025-01-24T10:35:00.201Z",
+  "brand": {
+    "name": "bmw",
+    "info": "car brand"
+  },
+  "brandTone": {
+    "missionStatement": "BMW is a premium automotive brand dedicated to delivering the ultimate driving experience through innovative engineering, cutting-edge technology, and timeless design. The brand is committed to sustainability and shaping the future of mobility with a focus on performance, luxury, and environmental responsibility.",
+    "toneOfVoice": "premium, innovative, confident, sophisticated, dynamic, forward-thinking, precise, luxurious, aspirational, performance-driven, modern, elegant, bold, reliable, visionary",
+    "favoriteKeywords": "performance, innovation, luxury, precision, sustainability, driving, experience, technology, design, future, dynamic, premium, engineering, excellence, mobility",
+    "wordsToAvoid": "cheap, slow, outdated, basic, unreliable, inefficient, ordinary, dull, impractical, fragile, cumbersome, generic, inferior, wasteful, stagnant"
+  },
+  "weblayer": {
+    "questions": [
+      {
+        "id": "q1",
+        "category": "preference",
+        "text": "What type of driving experience are you looking for?",
+        "options": [
+          "🚗 Performance; 🛣️ Comfort; 🌿 Eco-friendly; 🚀 Sporty"
+        ],
+        "personalization_use_cases": [
+          "Tailor vehicle recommendations",
+          "Highlight relevant features"
+        ]
+      },
+      {
+        "id": "q2",
+        "category": "intent",
+        "text": "How soon are you planning to purchase a vehicle?",
+        "options": [
+          "⚡ Within 1 month; 🗓️ 1-3 months; 📅 3-6 months; 🤔 Just browsing"
+        ],
+        "personalization_use_cases": [
+          "Prioritize leads",
+          "Offer timely promotions"
+        ]
+      },
+      {
+        "id": "q3",
+        "category": "demographic",
+        "text": "What is your primary use for a BMW?",
+        "options": [
+          "🏢 Commuting; 🛣️ Road trips; 🏎️ Track days; 🛍️ Family use"
+        ],
+        "personalization_use_cases": [
+          "Customize content",
+          "Suggest relevant models"
+        ]
+      },
+      {
+        "id": "q4",
+        "category": "behavior",
+        "text": "How often do you upgrade your vehicle?",
+        "options": [
+          "🔄 Every 2-3 years; ⏳ Every 4-5 years; 🕰️ Every 6+ years; 🚫 Rarely"
+        ],
+        "personalization_use_cases": [
+          "Identify loyalty opportunities",
+          "Offer upgrade incentives"
+        ]
+      }
+    ]
+  },
+  "emails": {
+    "emails": {
+      "inspiration": {
+        "subject_line": "Reignite Your Ultimate Driving Experience",
+        "preheader": "Rediscover the thrill and innovation that brought you to BMW. Your journey is just getting started.",
+        "hero_image_description": "A sleek BMW vehicle driving on a scenic mountain road, embodying performance and freedom.",
+        "greeting": "Dear {{customer.first_name}},",
+        "first_paragraph": "We’ve noticed you haven’t been driving with us as much lately. At BMW, we’re committed to delivering the ultimate driving experience—one that combines performance, innovation, and sustainability. Let’s reignite that passion and explore what’s next for you.",
+        "second_title": "Your Journey Awaits",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.highest_value_achieved}}",
+            "template": "You’ve already achieved {{customer.highest_value_achieved}} in performance and efficiency with your BMW.",
+            "fallback": "Your BMW has been designed to deliver peak performance and efficiency."
+          },
+          "second": {
+            "metric": "{{customer.potential_savings}}",
+            "template": "By continuing your journey with us, you could save up to {{customer.potential_savings}} annually on maintenance and fuel costs.",
+            "fallback": "Staying with BMW ensures you benefit from our latest innovations and cost-saving technologies."
+          }
+        }
+      },
+      "nostalgia": {
+        "subject_line": "Celebrating Your BMW Legacy",
+        "preheader": "Reflect on the milestones you’ve achieved with BMW and the road ahead.",
+        "hero_image_description": "A classic BMW model alongside a modern version, symbolizing the evolution of your journey.",
+        "greeting": "Dear {{customer.first_name}},",
+        "first_paragraph": "Your relationship with BMW has been built on trust, performance, and innovation. We’ve shared many miles together, and we’re here to ensure your journey continues to be as remarkable as it has been.",
+        "second_title": "A Legacy of Excellence",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.relationship_value}}",
+            "template": "Over the years, your BMW has delivered {{customer.relationship_value}} in value and satisfaction.",
+            "fallback": "Your BMW has consistently provided unmatched performance and reliability."
+          },
+          "second": {
+            "metric": "{{customer.lifetime_value}}",
+            "template": "Your lifetime value with BMW is {{customer.lifetime_value}}, a testament to our enduring partnership.",
+            "fallback": "Your loyalty to BMW has been a cornerstone of our shared success."
+          }
+        }
+      },
+      "social_proof": {
+        "subject_line": "Join the BMW Community’s Success",
+        "preheader": "Be part of a community that drives innovation and excellence forward.",
+        "hero_image_description": "A vibrant image of a BMW owners’ meetup, showcasing camaraderie and shared passion.",
+        "greeting": "Dear {{customer.first_name}},",
+        "first_paragraph": "The BMW community is thriving, and we’d love for you to continue being a part of it. Together, we’re shaping the future of mobility and celebrating the joy of driving.",
+        "second_title": "Collective Achievements",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.community_rank}}",
+            "template": "You’re ranked {{customer.community_rank}} in our community, a testament to your engagement and passion.",
+            "fallback": "Your involvement in the BMW community has been invaluable."
+          },
+          "second": {
+            "metric": "{{customer.engagement_score}}",
+            "template": "With an engagement score of {{customer.engagement_score}}, you’re a key part of our collective success.",
+            "fallback": "Your participation in the BMW community drives us forward."
+          }
+        }
+      }
+    },
+    "metadata": {
+      "version": "1.0",
+      "generated_at": "2023-10-05T14:30:00Z",
+      "brand_name": "BMW"
+    }
+  }
+}

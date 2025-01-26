@@ -1,0 +1,141 @@
+{
+  "timestamp": "2025-01-22T15:38:37.504Z",
+  "brand": {
+    "name": "GAP",
+    "info": "GAP the fashion brand"
+  },
+  "brandTone": "{\n  \"missionStatement\": \"GAP is a global fashion brand dedicated to providing stylish, high-quality clothing and accessories for men, women, and children. The brand emphasizes inclusivity, self-expression, and timeless style, aiming to make modern, versatile fashion accessible to everyone. GAP is committed to sustainability and ethical practices, striving to create a positive impact on the environment and communities.\",\n  \"toneOfVoice\": \"friendly, inclusive, modern, approachable, optimistic, authentic, casual, confident\",\n  \"favoriteKeywords\": \"style, quality, inclusivity, fashion, modern, timeless, sustainability, community, expression, versatile\",\n  \"wordsToAvoid\": \"outdated, exclusive, complicated, formal, rigid, impersonal, temporary, wasteful\"\n}",
+  "weblayer": {
+    "questions": [
+      {
+        "id": "gap_demo_age",
+        "category": "demographic",
+        "text": "What is your age group?",
+        "options": [
+          "👶 Under 18",
+          "👩‍🎓 18-24",
+          "👨‍💼 25-34",
+          "👩‍🦳 35+"
+        ],
+        "personalization_use_cases": [
+          "Age-specific product recommendations",
+          "Targeted promotions"
+        ]
+      },
+      {
+        "id": "gap_pref_style",
+        "category": "preference",
+        "text": "What is your go-to style?",
+        "options": [
+          "👖 Casual",
+          "👗 Classic",
+          "🕶️ Trendy",
+          "👔 Smart"
+        ],
+        "personalization_use_cases": [
+          "Personalized product suggestions",
+          "Style-based email campaigns"
+        ]
+      },
+      {
+        "id": "gap_intent_purpose",
+        "category": "intent",
+        "text": "What brings you to GAP today?",
+        "options": [
+          "🛍️ Just browsing",
+          "🎁 Shopping for gifts",
+          "👕 Updating wardrobe",
+          "🛒 Looking for deals"
+        ],
+        "personalization_use_cases": [
+          "Intent-based product sorting",
+          "Targeted messaging"
+        ]
+      },
+      {
+        "id": "gap_beh_frequency",
+        "category": "behavior",
+        "text": "How often do you shop at GAP?",
+        "options": [
+          "🛍️ First time",
+          "🛒 Occasionally",
+          "👕 Regularly",
+          "💳 Very often"
+        ],
+        "personalization_use_cases": [
+          "Loyalty program targeting",
+          "Frequency-based offers"
+        ]
+      }
+    ]
+  },
+  "emails": {
+    "emails": {
+      "inspiration": {
+        "subject_line": "Your Style Journey Awaits, {{customer.first_name}}!",
+        "preheader": "Rediscover your fashion potential with GAP. Let's reignite your style journey together.",
+        "hero_image_description": "A vibrant image of a diverse group of people confidently wearing GAP outfits, showcasing their unique styles.",
+        "greeting": "Hi {{customer.first_name}},",
+        "first_paragraph": "We've noticed you haven't been as active with us lately. At GAP, we believe in empowering your unique style journey. Let's reconnect and explore how we can help you achieve your fashion aspirations.",
+        "second_title": "Your Style, Your Way",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.highest_value_achieved}}",
+            "template": "You've already saved {{customer.highest_value_achieved}} with GAP. Imagine what more you can achieve!",
+            "fallback": "You've already achieved great savings with GAP. Imagine what more you can achieve!"
+          },
+          "second": {
+            "metric": "{{customer.potential_savings}}",
+            "template": "With your current trends, you could save up to {{customer.potential_savings}} on your next purchase.",
+            "fallback": "With your current trends, you could save significantly on your next purchase."
+          }
+        }
+      },
+      "nostalgia": {
+        "subject_line": "Remember Your First GAP Look, {{customer.first_name}}?",
+        "preheader": "Relive the moments when GAP made you feel confident and stylish. Let's create more memories together.",
+        "hero_image_description": "A nostalgic image of a classic GAP storefront with a warm, inviting atmosphere.",
+        "greeting": "Hi {{customer.first_name}},",
+        "first_paragraph": "We've shared some great moments together, and we value the trust you've placed in GAP. Let's continue this journey and rediscover the comfort and style you've always loved.",
+        "second_title": "Timeless Style, Timeless Memories",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.relationship_value}}",
+            "template": "You've been a valued member of the GAP family for {{customer.relationship_value}} years. Thank you for being part of our story.",
+            "fallback": "You've been a valued member of the GAP family for many years. Thank you for being part of our story."
+          },
+          "second": {
+            "metric": "{{customer.lifetime_value}}",
+            "template": "Your loyalty has earned you {{customer.lifetime_value}} in rewards. Let's keep building on that!",
+            "fallback": "Your loyalty has earned you significant rewards. Let's keep building on that!"
+          }
+        }
+      },
+      "social_proof": {
+        "subject_line": "Join the GAP Community, {{customer.first_name}}!",
+        "preheader": "Be part of a vibrant community that loves GAP as much as you do. Let's celebrate style together.",
+        "hero_image_description": "A lively image of a GAP community event, with people enjoying fashion and camaraderie.",
+        "greeting": "Hi {{customer.first_name}},",
+        "first_paragraph": "We've noticed you haven't been as active with us lately. At GAP, we thrive on community and shared style experiences. Let's reconnect and celebrate fashion together.",
+        "second_title": "Together in Style",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.community_rank}}",
+            "template": "You're ranked {{customer.community_rank}} in our community. Let's climb higher together!",
+            "fallback": "You're a valued member of our community. Let's achieve more together!"
+          },
+          "second": {
+            "metric": "{{customer.engagement_score}}",
+            "template": "Your engagement score is {{customer.engagement_score}}. Let's boost it with our latest collections!",
+            "fallback": "Your engagement is important to us. Let's boost it with our latest collections!"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "version": "1.0",
+      "generated_at": "2023-10-05T14:30:00Z",
+      "brand_name": "GAP"
+    }
+  }
+}

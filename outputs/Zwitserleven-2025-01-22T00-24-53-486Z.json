@@ -1,0 +1,164 @@
+{
+  "timestamp": "2025-01-22T00:24:53.486Z",
+  "brand": {
+    "name": "Zwitserleven",
+    "info": "About us:\n\nThe pension specialist\nZwitserleven is the only insurer in the Netherlands that focuses on pensions. No car, home contents or health insurance. So no distractions. And that makes us, as the only real pension brand, a specialist.\n\nWe offer everyone a pension in understandable language, with a clear overview. So that you know where you stand. And your survivors too. We want to give pensioners the Zwitserleven feeling, and that everyone around them can enjoy it.\n\nMission:\nThe Swiss life feeling.\nA feeling we share\n\nA new feeling\nYou know us from the Zwitserleven feeling. That is the feeling you have when you have arranged your pension well, so that you can enjoy your old age without worries. The Zwitserleven feeling is even in the Dikke Van Dale. We have become famous with it. Almost everyone knows it. \n\nWe therefore believe that everyone deserves the Zwitserleven feeling. High earners and low earners. Pensioners and toddlers. Cat people and dog people. And also yourself with the people around you.\n\nA feeling we share\nThere comes a day when you stop working. Then you retire. And then? You prefer to share that time with the people around you. Doing fun things together. With friends or family. Doing something useful in the neighborhood or at a club.\n\nAnd that is the beauty of the Zwitserleven feeling: it is contagious. You don't just enjoy it yourself. Others feel it too."
+  },
+  "brandTone": {
+    "tone_of_voice": [
+      "specialized",
+      "clear",
+      "reassuring",
+      "inclusive",
+      "friendly",
+      "optimistic",
+      "approachable",
+      "trustworthy"
+    ],
+    "favorite_keywords": [
+      "pension",
+      "feeling",
+      "enjoy",
+      "share",
+      "understandable",
+      "clear",
+      "specialist",
+      "without worries",
+      "retire",
+      "together",
+      "fun",
+      "contagious"
+    ],
+    "words_to_avoid": [
+      "distractions",
+      "complex",
+      "uncertain",
+      "isolated",
+      "stressful",
+      "exclusive",
+      "confusing",
+      "risky",
+      "unclear",
+      "burden"
+    ],
+    "confidence_score": 0.9,
+    "flags": []
+  },
+  "weblayer": {
+    "questions": [
+      {
+        "id": "demographic_1",
+        "category": "demographic",
+        "text": "What is your current age group?",
+        "options": [
+          "👶 Under 30; 🧑 30-44; 👨‍🦳 45-59; 👵 60+"
+        ],
+        "personalization_use_cases": [
+          "Tailor pension plans to age-specific needs"
+        ]
+      },
+      {
+        "id": "preference_1",
+        "category": "preference",
+        "text": "How do you prefer to receive pension information?",
+        "options": [
+          "📱 Mobile app; 💻 Website; 📧 Email; 📞 Phone call"
+        ],
+        "personalization_use_cases": [
+          "Optimize communication channels"
+        ]
+      },
+      {
+        "id": "intent_1",
+        "category": "intent",
+        "text": "What is your primary goal for retirement?",
+        "options": [
+          "🌴 Travel; 🏡 Home; 🎓 Education; 🏥 Health"
+        ],
+        "personalization_use_cases": [
+          "Customize pension plan recommendations"
+        ]
+      },
+      {
+        "id": "behavior_1",
+        "category": "behavior",
+        "text": "How often do you review your pension plan?",
+        "options": [
+          "📅 Yearly; 📆 Quarterly; 🗓️ Monthly; ❌ Rarely"
+        ],
+        "personalization_use_cases": [
+          "Determine engagement frequency"
+        ]
+      }
+    ]
+  },
+  "emails": {
+    "emails": {
+      "inspiration": {
+        "subject_line": "Reignite Your Zwitserleven Feeling",
+        "preheader": "Let's get back to creating a worry-free future together.",
+        "hero_image_description": "A serene image of a retired couple enjoying a sunny day in a park, surrounded by family and friends.",
+        "greeting": "Hi {{customer.first_name}},",
+        "first_paragraph": "We noticed you haven't been as active with your pension plan recently. Remember, the Zwitserleven feeling is all about ensuring you and your loved ones can enjoy life without worries. Let's reconnect and make sure your future is as bright as ever.",
+        "second_title": "Your Future, Our Priority",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.highest_value_achieved}}",
+            "template": "You've already achieved a pension value of {{customer.highest_value_achieved}}.",
+            "fallback": "You've made significant progress towards your pension goals."
+          },
+          "second": {
+            "metric": "{{customer.potential_savings}}",
+            "template": "By staying on track, you could save an additional {{customer.potential_savings}}.",
+            "fallback": "There's still more potential to maximize your savings."
+          }
+        }
+      },
+      "nostalgia": {
+        "subject_line": "Celebrating Our Journey Together",
+        "preheader": "Reflect on the milestones we've achieved and the future we're building.",
+        "hero_image_description": "A nostalgic image of a timeline showing key milestones in a customer's pension journey with Zwitserleven.",
+        "greeting": "Dear {{customer.first_name}},",
+        "first_paragraph": "We've been with you every step of the way, helping you build a secure future. It's been a journey filled with trust and reliability. Let's continue to strengthen this partnership and ensure your pension plan remains robust.",
+        "second_title": "Our Shared History",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.relationship_value}}",
+            "template": "Our partnership has created a relationship value of {{customer.relationship_value}}.",
+            "fallback": "Our long-standing partnership has brought significant value to your pension plan."
+          },
+          "second": {
+            "metric": "{{customer.lifetime_value}}",
+            "template": "Your lifetime value with us is {{customer.lifetime_value}}.",
+            "fallback": "Your contributions have built a substantial lifetime value."
+          }
+        }
+      },
+      "social_proof": {
+        "subject_line": "Join Our Community of Happy Retirees",
+        "preheader": "See how others are enjoying their Zwitserleven feeling.",
+        "hero_image_description": "A vibrant image of a community event with retirees enjoying various activities together.",
+        "greeting": "Hello {{customer.first_name}},",
+        "first_paragraph": "You're part of a community that values a worry-free future. Many of our members are already enjoying their retirement, thanks to the Zwitserleven feeling. Let's ensure you continue to benefit from this collective success.",
+        "second_title": "Collective Achievements",
+        "data_points": {
+          "first": {
+            "metric": "{{customer.community_rank}}",
+            "template": "You're among the top {{customer.community_rank}}% of our community.",
+            "fallback": "You're a valued member of our community."
+          },
+          "second": {
+            "metric": "{{customer.engagement_score}}",
+            "template": "Your engagement score is {{customer.engagement_score}}.",
+            "fallback": "Your active participation is appreciated."
+          }
+        }
+      }
+    },
+    "metadata": {
+      "version": "1.0",
+      "generated_at": "2023-10-05T14:48:00Z",
+      "brand_name": "Zwitserleven"
+    }
+  }
+}
