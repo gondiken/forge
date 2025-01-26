@@ -82,15 +82,18 @@ export default function Home() {
     };
 
     try {
-      // Execute both operations and extract just the response
-      const response = await Promise.all([
+      // Execute both operations and get the response directly using array indexing
+      const results = await Promise.all([
         simulateLoadingStages(),
         fetch('/api/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ brandName, brandInfo })
         })
-      ]).then(([_, res]) => res);
+      ]);
+      
+      // Get the response from the second element of the array
+      const response = results[1];
 
       // Check for HTTP errors first
       if (!response.ok) {
