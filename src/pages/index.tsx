@@ -58,32 +58,26 @@ export default function Home() {
     e.preventDefault();
     setError(null);
 
-    // Create abort controller for our loading simulation
-    const abortController = new AbortController();
-    
-    // Simulate loading stages with the ability to abort
-    const simulateLoadingStages = async () => {
-      try {
-        for (const stage of ['analyzing-brand', 'generating-weblayer', 'generating-campaign'] as LoadingStage[]) {
-          setLoadingStage(stage);
-          await new Promise((resolve, reject) => {
-            const timeout = setTimeout(resolve, 3000);
-            abortController.signal.addEventListener('abort', () => {
-              clearTimeout(timeout);
-              reject(new Error('aborted'));
-            });
-          });
-        }
-        setLoadingStage('finalizing');
-      } catch (error) {
-        if ((error as Error).message !== 'aborted') throw error;
-      }
-    };
+    // Start with analyzing brand stage
+    setLoadingStage('analyzing-brand');
 
     try {
-      // Start the loading simulation
-      const loadingSimulation = simulateLoadingStages();
-      
+      // Simulate progression through stages while the API call is happening
+      const stageInterval = setInterval(() => {
+        setLoadingStage(currentStage => {
+          switch (currentStage) {
+            case 'analyzing-brand':
+              return 'generating-weblayer';
+            case 'generating-weblayer':
+              return 'generating-campaign';
+            case 'generating-campaign':
+              return 'finalizing';
+            default:
+              return currentStage;
+          }
+        });
+      }, 3000);
+
       // Make the API call
       const response = await fetch('/api/generate', {
         method: 'POST',
@@ -91,15 +85,15 @@ export default function Home() {
         body: JSON.stringify({ brandName, brandInfo })
       });
 
+      // Clear the stage interval once we have a response
+      clearInterval(stageInterval);
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.details || errorData.error || 'Failed to generate assets');
       }
 
       const data = await response.json();
-      
-      // Abort the loading simulation since we have our data
-      abortController.abort();
 
       setResults({
         ...data,
