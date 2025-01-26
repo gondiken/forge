@@ -225,7 +225,20 @@ export default function Home() {
             <div className="mt-8">
               <div className="border-t pt-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Results</h2>
-                
+
+                {/* Download Asset */}
+                <button
+                  onClick={handleDownload}
+                  className="flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                  </svg>
+                  Download Asset Library
+                </button>
+
+                <br/>
+
                 {/* Brand Tone Analysis */}
                 <div className="space-y-6 mb-6">
                   <h3 className="text-sm font-medium text-gray-700">Brand Tone Analysis</h3>
@@ -250,18 +263,6 @@ export default function Home() {
                     content={results.brandTone.wordsToAvoid}
                   />
                 </div>
-
-                {/* Download Buttons Section */}
-                <button
-                  onClick={handleDownload}
-                  className="flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
-                >
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                  </svg>
-                  Download Asset Library
-                </button>
-                <br/>
 
                 {/* Raw Output Downloads */}
                 <div className="mb-6 flex flex-wrap gap-2">
