@@ -49,38 +49,30 @@ interface TemplateData {
 }
 
 // Type-safe function to get nested values from an object
-const getNestedValue = (obj: Record<string, unknown>, path: string): string | undefined => {
+const getNestedValue = (obj: Record<string, any>, path: string): string | undefined => {
   const parts = path.split('.');
-  // We need to explicitly type the accumulator as unknown here because
-  // we're traversing an object of unknown depth
-  return parts.reduce((acc: unknown, part) => {
+  return parts.reduce((acc: any, part) => {
     if (acc === undefined || acc === null) return undefined;
     
     if (part.includes('[') && part.includes(']')) {
       const arrayName = part.split('[')[0];
       const index = parseInt(part.split('[')[1].split(']')[0]);
-      // Type assertion needed here as we're dealing with dynamic property access
-      const arrayObj = (acc as Record<string, unknown>)[arrayName];
-      return Array.isArray(arrayObj) ? arrayObj[index] : undefined;
+      return acc[arrayName] && Array.isArray(acc[arrayName]) ? acc[arrayName][index] : undefined;
     }
-    // Type assertion needed for dynamic property access
-    return (acc as Record<string, unknown>)[part];
-  }, obj) as string | undefined;
+    return acc[part];
+  }, obj);
 };
 
 // Utility function to handle different escape patterns in template strings
 const replaceAllOccurrences = (str: string, searchValue: string, replaceValue: string): string => {
-  // Create an array of possible escape variations that might occur in the template
   const searchPatterns = [
-    searchValue,                              // Original pattern
-    searchValue.replace(/"/g, '\\"'),         // With escaped quotes
-    searchValue.replace(/"/g, '\\\\"'),       // With double escaped quotes
-    JSON.stringify(searchValue).slice(1, -1)  // JSON stringified version without quotes
+    searchValue,                              
+    searchValue.replace(/"/g, '\\"'),         
+    searchValue.replace(/"/g, '\\\\"'),       
+    JSON.stringify(searchValue).slice(1, -1)  
   ];
 
-  // Replace all variations of the pattern in the string
   return searchPatterns.reduce((result, pattern) => {
-    // Escape special regex characters in the search pattern
     const escapedPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(escapedPattern, 'g');
     return result.replace(regex, replaceValue);
@@ -89,12 +81,12 @@ const replaceAllOccurrences = (str: string, searchValue: string, replaceValue: s
 
 // Main function to replace placeholders in the template
 const replacePlaceholders = (template: Record<string, unknown>, data: TemplateData): Record<string, unknown> => {
-  // Convert template to string for global replacement
   let templateString = JSON.stringify(template);
 
   // Helper function to safely get email-related data
   const getEmailValue = (path: string): string => {
-    const value = getNestedValue(data.emails, path);
+    const emailsObj = data.emails as Record<string, any>;
+    const value = getNestedValue(emailsObj, path);
     return value !== undefined ? value : '';
   };
 
