@@ -82,16 +82,15 @@ export default function Home() {
     };
 
     try {
-      // Execute both the loading simulation and API call in parallel
-      const [_, response] = await Promise.all([
+      const response = await Promise.all([
         simulateLoadingStages(),
         fetch('/api/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ brandName, brandInfo })
         })
-      ]);
-
+      ]).then(([_, res]) => res);
+      
       // Check for HTTP errors first
       if (!response.ok) {
         const errorData = await response.json();
