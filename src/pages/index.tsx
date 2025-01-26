@@ -81,14 +81,15 @@ export default function Home() {
     };
 
     try {
-      const [_, response] = await Promise.all([
-        simulateLoadingStages(),
-        fetch('/api/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ brandName, brandInfo })
-        })
-      ]);
+      // Start the loading simulation
+      const loadingSimulation = simulateLoadingStages();
+      
+      // Make the API call
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ brandName, brandInfo })
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -96,6 +97,8 @@ export default function Home() {
       }
 
       const data = await response.json();
+      
+      // Abort the loading simulation since we have our data
       abortController.abort();
 
       setResults({

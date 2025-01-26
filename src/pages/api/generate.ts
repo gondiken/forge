@@ -9,8 +9,21 @@ import { systemPrompt as brandTonePrompt } from '@/prompts/brandTone';
 import { systemPrompt as zeroPartyPrompt } from '@/prompts/zeroParty';
 import { systemPrompt as retentionEmailPrompt } from '@/prompts/retentionEmails';
 
+// Define types for our messages
+interface ChatMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
+// Define type for error response
+interface ErrorResponse {
+  message: string;
+  stack?: string;
+  type: string;
+}
+
 // Improved error handling helper
-const createErrorResponse = (error: unknown) => {
+const createErrorResponse = (error: unknown): ErrorResponse => {
   if (error instanceof Error) {
     return {
       message: error.message,
@@ -30,7 +43,7 @@ const openai = new OpenAI({
 });
 
 // Helper function for API calls with timeout
-const apiCallWithTimeout = async (messages: any[], timeout = 15000) => {
+const apiCallWithTimeout = async (messages: ChatMessage[], timeout = 15000) => {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);
 
@@ -38,7 +51,7 @@ const apiCallWithTimeout = async (messages: any[], timeout = 15000) => {
     const response = await openai.chat.completions.create({
       messages,
       model: 'deepseek-chat',
-      signal: controller.signal as any,
+      signal: controller.signal
     });
     return response;
   } finally {
@@ -46,9 +59,32 @@ const apiCallWithTimeout = async (messages: any[], timeout = 15000) => {
   }
 };
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+// Define the response type for success case
+interface SuccessResponse {
+  brandTone: Record<string, unknown>;
+  fullJson: Record<string, unknown>;
+  rawResponses: {
+    brandTone: string;
+    weblayer: string;
+    emails: string;
+  };
+}
+
+// Define the response type for error case
+interface ErrorApiResponse {
+  error: string;
+  details: string;
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<SuccessResponse | ErrorApiResponse>
+) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ 
+      error: 'Method not allowed',
+      details: 'Only POST requests are accepted'
+    });
   }
 
   const { brandName, brandInfo } = req.body;
