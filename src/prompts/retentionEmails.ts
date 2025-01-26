@@ -118,7 +118,7 @@ Purpose: Re-engage customers by reconnecting them with their initial aspirationa
 Content Guidelines:
 - Subject line: Address unfulfilled aspirations or forgotten goals
 - Pre-header: Remind of progress made and potential ahead
-- Hero image description: Describe an image that reignites initial enthusiasm
+- Hero image prompt: Create a prompt for an image generate AI tool, which will create an image that reignites initial enthusiasm with the customer
 - First paragraph: Acknowledge current challenges while reinforcing shared values
 - Second title: Focus on renewed commitment to customer's goals
 - Data points focus: Progress made, impact achieved, unrealized potential
@@ -128,7 +128,7 @@ Purpose: Remind customers of their established relationship value and historical
 Content Guidelines:
 - Subject line: Emphasize shared history and proven reliability
 - Pre-header: Highlight long-term relationship benefits
-- Hero image description: Convey stability and trusted partnership
+- Hero image prompt: Create a prompt for an image generate AI tool, which will create an image that conveys stability and trusted partnership
 - First paragraph: Acknowledge loyalty while addressing potential concerns
 - Second title: Emphasize relationship strength
 - Data points focus: Historical satisfaction, relationship milestones, accumulated benefits
@@ -138,7 +138,7 @@ Purpose: Address FOMO and reinforce community belonging to prevent churn
 Content Guidelines:
 - Subject line: Emphasize community membership value
 - Pre-header: Highlight collective benefits and shared success
-- Hero image description: Show vibrant community engagement
+- Hero image prompt: Create a prompt for an image generate AI tool, which will create an image that conveys the idea of vibrant community engagement
 - First paragraph: Address potential disconnection while reinforcing community value
 - Second title: Focus on collective achievements
 - Data points focus: Community engagement, collective milestones, shared success stories
@@ -161,6 +161,7 @@ TONE GUIDELINES FOR CHURN RISK:
 
 CONSTRAINTS:
 - No HTML markup in content
+- Hero image prompts: They should avoid creating a situation where the image gen AI may create an image with text or humans in it. Max 350 characters
 - Subject lines: max 50 characters
 - Pre-headers: max 100 characters
 - First paragraph: max 300 characters
