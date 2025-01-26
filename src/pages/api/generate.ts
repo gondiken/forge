@@ -37,7 +37,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       model: 'deepseek-chat',
     });
 
-    const brandTone = JSON.parse(cleanJsonString(brandToneRes.choices[0].message.content));
+    // Add null check for message content
+    const brandToneContent = brandToneRes.choices[0].message.content;
+    if (!brandToneContent) {
+      throw new Error('Failed to generate brand tone analysis');
+    }
+
+    const brandTone = JSON.parse(cleanJsonString(brandToneContent));
 
     const enhancedContext = `
 Brand: ${brandName}
@@ -67,8 +73,16 @@ Brand Analysis Results:
       })
     ]);
 
-    const weblayer = JSON.parse(cleanJsonString(weblayerRes.choices[0].message.content));
-    const emails = JSON.parse(cleanJsonString(emailRes.choices[0].message.content));
+    // Add null checks for other responses
+    const weblayerContent = weblayerRes.choices[0].message.content;
+    const emailContent = emailRes.choices[0].message.content;
+
+    if (!weblayerContent || !emailContent) {
+      throw new Error('Failed to generate weblayer or email content');
+    }
+
+    const weblayer = JSON.parse(cleanJsonString(weblayerContent));
+    const emails = JSON.parse(cleanJsonString(emailContent));
 
     const finalJson = replacePlaceholders(baseTemplate, {
       brand: {
@@ -88,9 +102,9 @@ Brand Analysis Results:
       brandTone,
       fullJson: finalJson,
       rawResponses: {
-        brandTone: brandToneRes.choices[0].message.content,
-        weblayer: weblayerRes.choices[0].message.content,
-        emails: emailRes.choices[0].message.content
+        brandTone: brandToneContent,
+        weblayer: weblayerContent,
+        emails: emailContent
       }
     });
   } catch (error) {
