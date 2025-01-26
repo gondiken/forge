@@ -9,82 +9,25 @@ import { systemPrompt as brandTonePrompt } from '@/prompts/brandTone';
 import { systemPrompt as zeroPartyPrompt } from '@/prompts/zeroParty';
 import { systemPrompt as retentionEmailPrompt } from '@/prompts/retentionEmails';
 
-// Define types for our messages
-interface ChatMessage {
-  role: 'system' | 'user' | 'assistant';
-  content: string;
-}
-
-// Define type for error response
-interface ErrorResponse {
-  message: string;
-  stack?: string;
-  type: string;
-}
-
-// Improved error handling helper
-const createErrorResponse = (error: unknown): ErrorResponse => {
-  if (error instanceof Error) {
-    return {
-      message: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
-      type: error.constructor.name
-    };
-  }
-  return { message: 'An unknown error occurred', type: 'UnknownError' };
-};
-
 const openai = new OpenAI({
   baseURL: 'https://api.deepseek.com',
   apiKey: process.env.DEEPSEEK_API_KEY,
   defaultHeaders: {
     'Content-Type': 'application/json'
-  }
+  },
+  timeout: 30000 // 30 second timeout
 });
 
-// Helper function for API calls with timeout
-const apiCallWithTimeout = async (messages: ChatMessage[], timeout = 15000) => {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-  try {
-    const response = await openai.chat.completions.create({
-      messages,
-      model: 'deepseek-chat',
-      signal: controller.signal
-    });
-    return response;
-  } finally {
-    clearTimeout(timeoutId);
-  }
+const cleanJsonString = (str: string) => {
+  return str.replace(/^```json\n/, '').replace(/\n```$/, '');
 };
-
-// Define the response type for success case
-interface SuccessResponse {
-  brandTone: Record<string, unknown>;
-  fullJson: Record<string, unknown>;
-  rawResponses: {
-    brandTone: string;
-    weblayer: string;
-    emails: string;
-  };
-}
-
-// Define the response type for error case
-interface ErrorApiResponse {
-  error: string;
-  details: string;
-}
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<SuccessResponse | ErrorApiResponse>
+  res: NextApiResponse
 ) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ 
-      error: 'Method not allowed',
-      details: 'Only POST requests are accepted'
-    });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { brandName, brandInfo } = req.body;
@@ -114,20 +57,29 @@ export default async function handler(
     // Prepare context for all API calls
     const enhancedContext = `Brand: ${brandName}\nBrand Information: ${brandInfo}`;
 
-    // Make parallel API calls with timeouts
+    // Make parallel API calls
     const [brandToneRes, weblayerRes, emailRes] = await Promise.all([
-      apiCallWithTimeout([
-        { role: 'system', content: brandTonePrompt },
-        { role: 'user', content: enhancedContext }
-      ]),
-      apiCallWithTimeout([
-        { role: 'system', content: zeroPartyPrompt },
-        { role: 'user', content: enhancedContext }
-      ]),
-      apiCallWithTimeout([
-        { role: 'system', content: retentionEmailPrompt },
-        { role: 'user', content: enhancedContext }
-      ])
+      openai.chat.completions.create({
+        messages: [
+          { role: 'system', content: brandTonePrompt },
+          { role: 'user', content: enhancedContext }
+        ],
+        model: 'deepseek-chat'
+      }),
+      openai.chat.completions.create({
+        messages: [
+          { role: 'system', content: zeroPartyPrompt },
+          { role: 'user', content: enhancedContext }
+        ],
+        model: 'deepseek-chat'
+      }),
+      openai.chat.completions.create({
+        messages: [
+          { role: 'system', content: retentionEmailPrompt },
+          { role: 'user', content: enhancedContext }
+        ],
+        model: 'deepseek-chat'
+      })
     ]);
 
     // Process responses
@@ -140,9 +92,9 @@ export default async function handler(
     }
 
     // Parse responses
-    const brandTone = JSON.parse(brandToneContent.replace(/^```json\n/, '').replace(/\n```$/, ''));
-    const weblayer = JSON.parse(weblayerContent.replace(/^```json\n/, '').replace(/\n```$/, ''));
-    const emails = JSON.parse(emailContent.replace(/^```json\n/, '').replace(/\n```$/, ''));
+    const brandTone = JSON.parse(cleanJsonString(brandToneContent));
+    const weblayer = JSON.parse(cleanJsonString(weblayerContent));
+    const emails = JSON.parse(cleanJsonString(emailContent));
 
     // Generate final JSON
     const finalJson = replacePlaceholders(baseTemplate, {
@@ -162,30 +114,35 @@ export default async function handler(
     });
 
   } catch (error) {
-    console.error('Detailed error:', createErrorResponse(error));
+    console.error('Detailed error:', error);
     
-    // Send appropriate error response
-    if (error instanceof SyntaxError) {
-      return res.status(500).json({
-        error: 'Failed to parse API response',
-        details: error.message
-      });
-    }
-    
-    if (error instanceof Error && error.message.includes('DEEPSEEK_API_KEY')) {
-      return res.status(500).json({
-        error: 'API configuration error',
-        details: 'The API key is not properly configured'
-      });
+    if (error instanceof Error) {
+      // If it's a timeout error
+      if (error.message.includes('timeout')) {
+        return res.status(504).json({
+          error: 'Request timeout',
+          details: 'The request took too long to complete. Please try again.'
+        });
+      }
+      
+      // If it's a parsing error
+      if (error instanceof SyntaxError) {
+        return res.status(500).json({
+          error: 'Failed to parse API response',
+          details: error.message
+        });
+      }
+      
+      // If it's an API key error
+      if (error.message.includes('DEEPSEEK_API_KEY')) {
+        return res.status(500).json({
+          error: 'API configuration error',
+          details: 'The API key is not properly configured'
+        });
+      }
     }
 
-    if (error instanceof Error && error.message.includes('AbortError')) {
-      return res.status(504).json({
-        error: 'Request timeout',
-        details: 'The request took too long to complete'
-      });
-    }
-
+    // Generic error response
     return res.status(500).json({
       error: 'Failed to generate assets',
       details: error instanceof Error ? error.message : 'Unknown error occurred'
