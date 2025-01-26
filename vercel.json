@@ -1,7 +1,7 @@
 {
   "functions": {
     "pages/api/**/*.ts": {
-      "maxDuration": 160
+      "maxDuration": 60
     }
   },
   "headers": [
