@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   console.log('Starting request processing for brand:', brandName);
 
   try {
-    // Test Deepseek connectivity with a minimal chat completion request
+    // Let's first test if we can communicate with Deepseek
     console.log('Testing Deepseek API connection...');
     const testResponse = await openai.chat.completions.create({
       messages: [
@@ -41,7 +41,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       firstChoice: Boolean(testResponse.choices?.[0]?.message?.content)
     });
 
-  try {
     console.log('Reading base template...');
     const baseJsonPath = path.join(process.cwd(), 'src', 'templates', 'baseTemplate.json');
     const baseTemplate = await fs.readFile(baseJsonPath, 'utf-8').then(JSON.parse).catch((err) => {
