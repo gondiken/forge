@@ -8,6 +8,7 @@ type LoadingStage =
   | 'analyzing-brand'
   | 'generating-weblayer'
   | 'generating-campaign'
+  | 'definitely-not-slacking'
   | 'finalizing';
 
 // Interface defining the structure of our brand tone analysis results
@@ -37,7 +38,7 @@ export default function Home() {
   const [results, setResults] = useState<Results | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Convert loading stages into user-friendly messages for display
+  // Convert loading stages into user-friendly messages
   const getLoadingText = (stage: LoadingStage) => {
     switch (stage) {
       case 'analyzing-brand':
@@ -46,6 +47,8 @@ export default function Home() {
         return 'Generating custom weblayer...';
       case 'generating-campaign':
         return 'Creating omnichannel campaign...';
+      case 'definitely-not-slacking':
+        return 'Definitely not slacking...';
       case 'finalizing':
         return 'Finalizing assets...';
       default:
@@ -71,6 +74,8 @@ export default function Home() {
             case 'generating-weblayer':
               return 'generating-campaign';
             case 'generating-campaign':
+              return 'definitely-not-slacking';
+            case 'definitely-not-slacking':
               return 'finalizing';
             default:
               return currentStage;
@@ -110,6 +115,7 @@ export default function Home() {
       setLoadingStage('idle');
     }
   };
+
 
   // Handle downloads of raw LLM response JSONs
   const handleRawDownload = (type: 'brandTone' | 'weblayer' | 'emails') => {
