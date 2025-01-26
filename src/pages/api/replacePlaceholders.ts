@@ -48,29 +48,37 @@ interface TemplateData {
   emails: EmailData;
 }
 
-type NestedObject = {
-    [key: string]: NestedObject | string | number | boolean | unknown[] | null | undefined;
+type DeepPartial<T> = {
+    [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
 
 // Type-safe function to get nested values from an object
-const getNestedValue = (obj: NestedObject, path: string): string | undefined => {
+const getNestedValue = (obj: unknown, path: string): string | undefined => {
     const parts = path.split('.');
-    return parts.reduce((acc: unknown, part) => {
-        if (acc === undefined || acc === null) return undefined;
+    let current = obj;
+    
+    for (const part of parts) {
+        if (current === null || current === undefined) return undefined;
         
         if (part.includes('[') && part.includes(']')) {
             const arrayName = part.split('[')[0];
             const index = parseInt(part.split('[')[1].split(']')[0]);
-            const arrayObj = acc as Record<string, unknown>;
-            if (arrayObj[arrayName] && Array.isArray(arrayObj[arrayName])) {
-                const array = arrayObj[arrayName] as unknown[];
-                return array[index];
-            }
-            return undefined;
+            // Type assertion here is safe because we control the input paths
+            const arrayValue = (current as Record<string, unknown>)[arrayName];
+            if (!Array.isArray(arrayValue)) return undefined;
+            current = arrayValue[index];
+        } else {
+            current = (current as Record<string, unknown>)[part];
         }
-        return (acc as Record<string, unknown>)[part];
-    }, obj) as string | undefined;
+    }
+    
+    if (Array.isArray(current)) {
+        return current.join(';');
+    }
+    
+    return current?.toString();
 };
+
 
 // Utility function to handle different escape patterns in template strings
 const replaceAllOccurrences = (str: string, searchValue: string, replaceValue: string): string => {
@@ -94,9 +102,8 @@ const replacePlaceholders = (template: Record<string, unknown>, data: TemplateDa
 
   // Helper function to safely get email-related data
   const getEmailValue = (path: string): string => {
-      const emailsObj = data.emails as unknown as NestedObject;
-      const value = getNestedValue(emailsObj, path);
-      return value !== undefined ? value : '';
+      const value = getNestedValue(data, path);
+      return value ?? '';
   };
 
 
