@@ -11,7 +11,15 @@ import { systemPrompt as retentionEmailPrompt } from '@/prompts/retentionEmails'
 
 const openai = new OpenAI({
   baseURL: 'https://api.deepseek.com',
-  apiKey: process.env.DEEPSEEK_API_KEY
+  apiKey: process.env.DEEPSEEK_API_KEY,
+  defaultHeaders: {
+    'Content-Type': 'application/json'
+  }
+});
+
+console.log('OpenAI client configuration:', {
+  hasApiKey: Boolean(process.env.DEEPSEEK_API_KEY),
+  baseURL: openai.baseURL
 });
 
 const cleanJsonString = (str: string) => {
