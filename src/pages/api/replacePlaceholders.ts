@@ -48,10 +48,6 @@ interface TemplateData {
   emails: EmailData;
 }
 
-type DeepPartial<T> = {
-    [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
-};
-
 // Type-safe function to get nested values from an object
 const getNestedValue = (obj: unknown, path: string): string | undefined => {
     const parts = path.split('.');
