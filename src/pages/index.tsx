@@ -10,12 +10,30 @@ type LoadingStage =
   | 'generating-campaign'
   | 'finalizing';
 
+
+interface BrandTone {
+  missionStatement: string;
+  toneOfVoice: string;
+  favoriteKeywords: string;
+  wordsToAvoid: string;
+}
+
+interface Results {
+  brandTone: BrandTone;
+  fullJson: Record<string, unknown>;
+  rawResponses: {
+    brandTone: string;
+    weblayer: string;
+    emails: string;
+  };
+}
+
 export default function Home() {
   // State management for form inputs, loading states, and results
   const [brandName, setBrandName] = useState('');
   const [brandInfo, setBrandInfo] = useState('');
   const [loadingStage, setLoadingStage] = useState<LoadingStage>('idle');
-  const [results, setResults] = useState<any>(null);
+  const [results, setResults] = useState<Results | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Convert loading stages into user-friendly messages
@@ -64,7 +82,7 @@ export default function Home() {
 
     try {
       // Start both the loading simulation and API call in parallel
-      const loadingPromise = simulateLoadingStages();
+      const loadingPromise = simulateLoadingStages().catch(console.error);
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

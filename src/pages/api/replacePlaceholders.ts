@@ -1,47 +1,105 @@
-const getNestedValue = (obj: any, path: string) => {
-  // Handle array indices in path (e.g., "questions[0].text")
+interface EmailDataPoint {
+  metric: string;
+  text: string;
+}
+
+interface EmailSection {
+  subject_line: string;
+  preheader: string;
+  first_paragraph: string;
+  second_title: string;
+  second_subtitle: string;
+  data_points: {
+    first: EmailDataPoint;
+    second: EmailDataPoint;
+  };
+}
+
+interface EmailData {
+  emails: {
+    inspiration: EmailSection;
+    nostalgia: EmailSection;
+    social_proof: EmailSection;
+  };
+  missions?: {
+    general: string;
+    product_focus: string;
+  };
+}
+
+interface WeblayerQuestion {
+  id: string;
+  category: string;
+  text: string;
+  options: string[];
+}
+
+interface WeblayerData {
+  questions: WeblayerQuestion[];
+}
+
+interface BrandData {
+  name: string;
+}
+
+interface TemplateData {
+  brand: BrandData;
+  weblayer: WeblayerData;
+  emails: EmailData;
+}
+
+// Type-safe function to get nested values from an object
+const getNestedValue = (obj: Record<string, unknown>, path: string): string | undefined => {
   const parts = path.split('.');
-  return parts.reduce((acc, part) => {
+  // We need to explicitly type the accumulator as unknown here because
+  // we're traversing an object of unknown depth
+  return parts.reduce((acc: unknown, part) => {
+    if (acc === undefined || acc === null) return undefined;
+    
     if (part.includes('[') && part.includes(']')) {
       const arrayName = part.split('[')[0];
       const index = parseInt(part.split('[')[1].split(']')[0]);
-      return acc?.[arrayName]?.[index];
+      // Type assertion needed here as we're dealing with dynamic property access
+      const arrayObj = (acc as Record<string, unknown>)[arrayName];
+      return Array.isArray(arrayObj) ? arrayObj[index] : undefined;
     }
-    return acc?.[part];
-  }, obj);
+    // Type assertion needed for dynamic property access
+    return (acc as Record<string, unknown>)[part];
+  }, obj) as string | undefined;
 };
 
+// Utility function to handle different escape patterns in template strings
 const replaceAllOccurrences = (str: string, searchValue: string, replaceValue: string): string => {
-  // Create an array of possible escape variations
+  // Create an array of possible escape variations that might occur in the template
   const searchPatterns = [
-    searchValue,                              // Original
+    searchValue,                              // Original pattern
     searchValue.replace(/"/g, '\\"'),         // With escaped quotes
     searchValue.replace(/"/g, '\\\\"'),       // With double escaped quotes
     JSON.stringify(searchValue).slice(1, -1)  // JSON stringified version without quotes
   ];
 
-  let result = str;
-  // Replace all variations
-  searchPatterns.forEach(pattern => {
-    const regex = new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-    result = result.replace(regex, replaceValue);
-  });
-  
-  return result;
+  // Replace all variations of the pattern in the string
+  return searchPatterns.reduce((result, pattern) => {
+    // Escape special regex characters in the search pattern
+    const escapedPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escapedPattern, 'g');
+    return result.replace(regex, replaceValue);
+  }, str);
 };
 
-const replacePlaceholders = (template: any, data: any) => {
+// Main function to replace placeholders in the template
+const replacePlaceholders = (template: Record<string, unknown>, data: TemplateData): Record<string, unknown> => {
   // Convert template to string for global replacement
   let templateString = JSON.stringify(template);
 
-  // Helper function to safely get email data
-  const getEmailValue = (path: string) => {
+  // Helper function to safely get email-related data
+  const getEmailValue = (path: string): string => {
     const value = getNestedValue(data.emails, path);
     return value !== undefined ? value : '';
   };
 
-  // Define mappings with correct paths
-  const replacements = {
+  // Define mappings with correct paths and types
+  const replacements: Record<string, string> = {
     // Weblayer replacements
     '#weblayer1_q1#': getNestedValue(data, 'weblayer.questions[0].text') || '',
     '#weblayer1_q1a#': getNestedValue(data, 'weblayer.questions[0].options') || '',
@@ -54,7 +112,7 @@ const replacePlaceholders = (template: any, data: any) => {
     '#zeroparty_q2#': getNestedValue(data, 'weblayer.questions[1].category') || '',
     '#zeroparty_q3#': getNestedValue(data, 'weblayer.questions[2].category') || '',
 
-    // Email replacements - note we're now using getEmailValue helper
+    // Email replacements using the helper function
     '#email1_subject#': getEmailValue('emails.inspiration.subject_line'),
     '#email1_preheader#': getEmailValue('emails.inspiration.preheader'),
     '#email1_paragraph1#': getEmailValue('emails.inspiration.first_paragraph'),
@@ -88,38 +146,23 @@ const replacePlaceholders = (template: any, data: any) => {
     '#email1_mission#': getEmailValue('missions.general'),
     '#email1_mission_on_product#': getEmailValue('missions.product_focus'),
     
-    // Brand name replacement
-    '#brand#': getNestedValue(data, 'brand.name') || ''
+    '#brand#': data.brand.name
   };
 
-  // Replace all occurrences of each placeholder
+  // Apply all replacements
   Object.entries(replacements).forEach(([placeholder, value]) => {
     if (value !== undefined && value !== '') {
-      if (Array.isArray(value)) {
-        // Handle array values
-        templateString = replaceAllOccurrences(
-          templateString,
-          placeholder,
-          JSON.stringify(value)
-        );
-      } else {
-        // Handle string values - don't add extra quotes
-        templateString = replaceAllOccurrences(
-          templateString,
-          placeholder,
-          value.toString()
-        );
-      }
+      templateString = replaceAllOccurrences(templateString, placeholder, value);
     }
   });
 
-  // Parse back to object
+  // Parse back to object with error handling
   try {
     return JSON.parse(templateString);
   } catch (error) {
     console.error('Error parsing final template:', error);
     console.error('Template string:', templateString);
-    throw error;
+    throw new Error('Failed to parse template after replacements');
   }
 };
 
