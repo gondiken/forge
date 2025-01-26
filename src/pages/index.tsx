@@ -64,7 +64,6 @@ export default function Home() {
     // Simulate loading stages with the ability to abort
     const simulateLoadingStages = async () => {
       try {
-        // Show each stage for 3 seconds unless aborted
         for (const stage of ['analyzing-brand', 'generating-weblayer', 'generating-campaign'] as LoadingStage[]) {
           setLoadingStage(stage);
           await new Promise((resolve, reject) => {
@@ -82,8 +81,7 @@ export default function Home() {
     };
 
     try {
-      // Execute both operations and get the response directly using array indexing
-      const results = await Promise.all([
+      const [_, response] = await Promise.all([
         simulateLoadingStages(),
         fetch('/api/generate', {
           method: 'POST',
@@ -91,34 +89,26 @@ export default function Home() {
           body: JSON.stringify({ brandName, brandInfo })
         })
       ]);
-      
-      // Get the response from the second element of the array
-      const response = results[1];
 
-      // Check for HTTP errors first
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.details || errorData.error || 'Failed to generate assets');
       }
 
       const data = await response.json();
-      
-      // API call is complete, stop the loading simulation
       abortController.abort();
-
-      // Parse brandTone if it's still a string
-      const brandTone = typeof data.brandTone === 'string' 
-        ? JSON.parse(data.brandTone) 
-        : data.brandTone;
 
       setResults({
         ...data,
-        brandTone,  // Store parsed version
-        rawResponses: data.rawResponses  // Store raw responses for download
+        brandTone: typeof data.brandTone === 'string' 
+          ? JSON.parse(data.brandTone) 
+          : data.brandTone,
+        rawResponses: data.rawResponses
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-      console.error('Error:', err);
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred';
+      setError(errorMessage);
+      console.error('Error details:', err);
     } finally {
       setLoadingStage('idle');
     }

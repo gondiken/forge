@@ -1,3 +1,4 @@
+// src/prompts/brandTone.ts
 export const systemPrompt = `
 INPUT REQUIREMENTS:
 You will analyze brand content provided in the following format:

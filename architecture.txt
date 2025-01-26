@@ -1,3 +1,11 @@
+.eslintrc.json
+eslint.config.mjs
+next-env.d.ts
+next.config.ts
+tailwind.config.js
+tailwind.config.ts
+tsconfig.json
+vercel.json
 src/
   components/
     ContentBox.tsx

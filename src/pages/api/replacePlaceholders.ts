@@ -1,3 +1,4 @@
+// src/pages/api/replacePlaceholders.ts
 interface EmailDataPoint {
   metric: string;
   text: string;
