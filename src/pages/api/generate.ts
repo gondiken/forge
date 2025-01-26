@@ -17,6 +17,7 @@ const openai = new OpenAI({
   }
 });
 
+
 console.log('OpenAI client configuration:', {
   hasApiKey: Boolean(process.env.DEEPSEEK_API_KEY),
   baseURL: openai.baseURL
