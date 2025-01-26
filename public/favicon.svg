@@ -2,14 +2,11 @@
   <!-- Background with subtle gradient -->
   <defs>
     <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#E0B0FF;stop-opacity:0.1"/>
-      <stop offset="100%" style="stop-color:#9F6B99;stop-opacity:0.2"/>
+      <stop offset="0%" style="stop-color:#E0B0FF;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#9F6B99;stop-opacity:0.9"/>
     </linearGradient>
   </defs>
 
-  <!-- Base circle taking up more space -->
-  <circle cx="40" cy="40" r="39" fill="url(#bgGradient)" stroke="#9F6B99" stroke-width="1"/>
-  
   <!-- Larger F composition -->
   <g transform="translate(40 40) rotate(-10) scale(1.4)">
     <!-- Main F shape -->
@@ -25,15 +22,25 @@
              L -3 22
              L -17 22
              Z" 
-          fill="#9F6B99"/>
+          fill="url(#bgGradient)"/>
     
-    <!-- Larger decorative elements -->
-    <circle cx="11" cy="-15" r="3" fill="#E0B0FF" opacity="0.8"/>
-    <circle cx="8" cy="11" r="4" fill="#E0B0FF" opacity="0.6"/>
   </g>
+  
+  <!-- Decorative elements -->
+  <g fill="#E0B0FF" opacity="0.6">
+    <circle cx="51" cy="17">
+      <animate attributeName="r" values="5;4.5;5" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="50" cy="54">
+      <animate attributeName="r" values="3;3.5;3" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="63" cy="35" r="2.5"/>
+    <circle cx="55" cy="70" r="1.5"/>
+    <circle cx="22" cy="48">
+      <animate attributeName="r" values="1.5;1;1.5" dur="2s" begin="0.7s" repeatCount="indefinite"/>
+    </circle>
+    </g>
+    <!-- Base circle -->
+  <circle cx="40" cy="40" r="39" fill="none" stroke="#9F6B99" stroke-width="1"/>
 
-  <!-- Repositioned accent points -->
-  <circle cx="63" cy="35" r="2.5" fill="#E0B0FF" opacity="0.6"/>
-  <circle cx="55" cy="55" r="1.5" fill="#E0B0FF" opacity="0.5"/>
-  <circle cx="22" cy="48" r="1.5" fill="#E0B0FF" opacity="0.4"/>
 </svg>
