@@ -27,6 +27,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   console.log('Starting request processing for brand:', brandName);
 
   try {
+    // Test Deepseek connectivity with a minimal chat completion request
+    console.log('Testing Deepseek API connection...');
+    const testResponse = await openai.chat.completions.create({
+      messages: [
+        { role: 'user', content: 'test' }
+      ],
+      model: 'deepseek-chat',
+    });
+    console.log('Deepseek API connection test successful:', {
+      status: 'success',
+      hasChoices: Boolean(testResponse.choices?.length),
+      firstChoice: Boolean(testResponse.choices?.[0]?.message?.content)
+    });
+
+  try {
     console.log('Reading base template...');
     const baseJsonPath = path.join(process.cwd(), 'src', 'templates', 'baseTemplate.json');
     const baseTemplate = await fs.readFile(baseJsonPath, 'utf-8').then(JSON.parse).catch((err) => {
