@@ -48,19 +48,28 @@ interface TemplateData {
   emails: EmailData;
 }
 
+type NestedObject = {
+    [key: string]: NestedObject | string | number | boolean | unknown[] | null | undefined;
+};
+
 // Type-safe function to get nested values from an object
-const getNestedValue = (obj: Record<string, any>, path: string): string | undefined => {
-  const parts = path.split('.');
-  return parts.reduce((acc: any, part) => {
-    if (acc === undefined || acc === null) return undefined;
-    
-    if (part.includes('[') && part.includes(']')) {
-      const arrayName = part.split('[')[0];
-      const index = parseInt(part.split('[')[1].split(']')[0]);
-      return acc[arrayName] && Array.isArray(acc[arrayName]) ? acc[arrayName][index] : undefined;
-    }
-    return acc[part];
-  }, obj);
+const getNestedValue = (obj: NestedObject, path: string): string | undefined => {
+    const parts = path.split('.');
+    return parts.reduce((acc: unknown, part) => {
+        if (acc === undefined || acc === null) return undefined;
+        
+        if (part.includes('[') && part.includes(']')) {
+            const arrayName = part.split('[')[0];
+            const index = parseInt(part.split('[')[1].split(']')[0]);
+            const arrayObj = acc as Record<string, unknown>;
+            if (arrayObj[arrayName] && Array.isArray(arrayObj[arrayName])) {
+                const array = arrayObj[arrayName] as unknown[];
+                return array[index];
+            }
+            return undefined;
+        }
+        return (acc as Record<string, unknown>)[part];
+    }, obj) as string | undefined;
 };
 
 // Utility function to handle different escape patterns in template strings
@@ -85,10 +94,11 @@ const replacePlaceholders = (template: Record<string, unknown>, data: TemplateDa
 
   // Helper function to safely get email-related data
   const getEmailValue = (path: string): string => {
-    const emailsObj = data.emails as Record<string, any>;
-    const value = getNestedValue(emailsObj, path);
-    return value !== undefined ? value : '';
+      const emailsObj = data.emails as unknown as NestedObject;
+      const value = getNestedValue(emailsObj, path);
+      return value !== undefined ? value : '';
   };
+
 
   // Define mappings with correct paths and types
   const replacements: Record<string, string> = {
