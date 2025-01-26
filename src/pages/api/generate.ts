@@ -15,7 +15,7 @@ const openai = new OpenAI({
   defaultHeaders: {
     'Content-Type': 'application/json'
   },
-  timeout: 30000 // 30 second timeout
+  timeout: 25000  // Reduced timeout since we're making sequential calls
 });
 
 const cleanJsonString = (str: string) => {
@@ -54,18 +54,39 @@ export default async function handler(
         throw new Error('Failed to read base template');
       });
 
-    // Prepare context for all API calls
-    const enhancedContext = `Brand: ${brandName}\nBrand Information: ${brandInfo}`;
+    // Step 1: Get brand tone analysis first
+    console.log('Starting brand tone analysis...');
+    const brandToneRes = await openai.chat.completions.create({
+      messages: [
+        { role: 'system', content: brandTonePrompt },
+        { role: 'user', content: `Brand: ${brandName}\nInfo: ${brandInfo}` }
+      ],
+      model: 'deepseek-chat'
+    });
 
-    // Make parallel API calls
-    const [brandToneRes, weblayerRes, emailRes] = await Promise.all([
-      openai.chat.completions.create({
-        messages: [
-          { role: 'system', content: brandTonePrompt },
-          { role: 'user', content: enhancedContext }
-        ],
-        model: 'deepseek-chat'
-      }),
+    const brandToneContent = brandToneRes.choices[0].message.content;
+    if (!brandToneContent) {
+      throw new Error('Empty response from brand tone API');
+    }
+
+    const brandTone = JSON.parse(cleanJsonString(brandToneContent));
+    
+    // Create enhanced context using brand tone results
+    const enhancedContext = `
+Brand: ${brandName}
+Brand Information: ${brandInfo}
+
+Brand Analysis Results:
+- Mission: ${brandTone.missionStatement}
+- Tone of Voice: ${brandTone.toneOfVoice}
+- Key Brand Words: ${brandTone.favoriteKeywords}
+- Words to Avoid: ${brandTone.wordsToAvoid}
+    `.trim();
+
+    // Step 2: Now we can make the weblayer and email calls in parallel
+    // since they both depend only on the brand tone results
+    console.log('Starting weblayer and email generation...');
+    const [weblayerRes, emailRes] = await Promise.all([
       openai.chat.completions.create({
         messages: [
           { role: 'system', content: zeroPartyPrompt },
@@ -82,17 +103,14 @@ export default async function handler(
       })
     ]);
 
-    // Process responses
-    const brandToneContent = brandToneRes.choices[0].message.content;
     const weblayerContent = weblayerRes.choices[0].message.content;
     const emailContent = emailRes.choices[0].message.content;
-
-    if (!brandToneContent || !weblayerContent || !emailContent) {
-      throw new Error('Received empty response from API');
+    
+    if (!weblayerContent || !emailContent) {
+      throw new Error('Empty response from weblayer or email API');
     }
 
     // Parse responses
-    const brandTone = JSON.parse(cleanJsonString(brandToneContent));
     const weblayer = JSON.parse(cleanJsonString(weblayerContent));
     const emails = JSON.parse(cleanJsonString(emailContent));
 
@@ -132,17 +150,8 @@ export default async function handler(
           details: error.message
         });
       }
-      
-      // If it's an API key error
-      if (error.message.includes('DEEPSEEK_API_KEY')) {
-        return res.status(500).json({
-          error: 'API configuration error',
-          details: 'The API key is not properly configured'
-        });
-      }
     }
 
-    // Generic error response
     return res.status(500).json({
       error: 'Failed to generate assets',
       details: error instanceof Error ? error.message : 'Unknown error occurred'
