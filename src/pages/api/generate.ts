@@ -140,7 +140,7 @@ Brand Analysis Results:
         category1: finalCategory1,
         category2: finalCategory2
       }
-    } as TemplateData);
+    });
 
     console.log('Data being sent:', {
       emailsPresent: !!emails,
