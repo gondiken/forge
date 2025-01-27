@@ -9,23 +9,14 @@ import { systemPrompt as brandTonePrompt } from '@/prompts/brandTone';
 import { systemPrompt as zeroPartyPrompt } from '@/prompts/zeroParty';
 import { systemPrompt as retentionEmailPrompt } from '@/prompts/retentionEmails';
 
-const PROVIDER = 'deepseek'; // 'openai' or 'deepseek'
+const baseURL = 'https://api.deepseek.com';
+const model = 'deepseek-chat';
+const apiKey = DEEPSEEK_API_KEY;
 
-const apiConfig = {
-  apiKey: PROVIDER === 'openai' 
-    ? process.env.OPENAI_API_KEY 
-    : process.env.DEEPSEEK_API_KEY,
-  baseURL: PROVIDER === 'openai'
-    ? 'https://api.openai.com/v1'
-    : 'https://api.deepseek.com',
-  model: PROVIDER === 'openai'
-    ? 'gpt-4-turbo-preview'
-    : 'deepseek-chat'
-};
 
 const openai = new OpenAI({
-  apiKey: apiConfig.apiKey,
-  baseURL: apiConfig.baseURL,
+  apiKey: apiKey,
+  baseURL: baseURL,
   defaultHeaders: {
     'Content-Type': 'application/json'
   },
@@ -75,7 +66,7 @@ export default async function handler(
         { role: 'system', content: brandTonePrompt },
         { role: 'user', content: `Brand: ${brandName}\nInfo: ${brandInfo}` }
       ],
-      model: apiConfig.model
+      model: model
     });
 
     const brandToneContent = brandToneRes.choices[0].message.content;
@@ -108,14 +99,14 @@ Brand Analysis Results:
           { role: 'system', content: zeroPartyPrompt },
           { role: 'user', content: enhancedContext }
         ],
-        model: apiConfig.model
+        model: model
       }),
       openai.chat.completions.create({
         messages: [
           { role: 'system', content: retentionEmailPrompt },
           { role: 'user', content: enhancedContext }
         ],
-        model: apiConfig.model
+        model: model
       })
     ]);
 
