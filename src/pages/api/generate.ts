@@ -9,8 +9,7 @@ import { systemPrompt as brandTonePrompt } from '@/prompts/brandTone';
 import { systemPrompt as zeroPartyPrompt } from '@/prompts/zeroParty';
 import { systemPrompt as retentionEmailPrompt } from '@/prompts/retentionEmails';
 
-type Provider = 'openai' | 'deepseek';
-const PROVIDER: Provider = 'deepseek';
+const PROVIDER = 'deepseek' as const; // or openai
 
 const apiConfig = {
   apiKey: PROVIDER === 'openai' 
