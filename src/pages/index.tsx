@@ -223,7 +223,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loadingStage !== 'idle'}
-                className="flex-1 self-end px-6 py-2 bg-[#9333EA] text-white rounded-xl font-medium text-lg hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:bg-purple-400 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 self-end px-6 py-2 bg-[#9333EA] text-white rounded-xl font-medium text-lg hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:bg-purple-400 disabled:cursor-not-allowed transition-colors"
               >
                 {loadingStage !== 'idle' ? (
                   <span className="flex items-center justify-center text-white">
@@ -256,7 +256,7 @@ export default function Home() {
                 {/* Download Asset Button */}
                 <button
                   onClick={handleDownload}
-                  className="flex items-center px-4 py-2 bg-[#9333EA] text-white rounded-xl hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors"
+                  className="flex items-center px-4 py-2 bg-[#9333EA] text-white rounded-xl hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors"
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -297,19 +297,19 @@ export default function Home() {
                 <div className="mb-6 flex flex-wrap gap-2">
                   <button
                     onClick={() => handleRawDownload('brandTone')}
-                    className="px-3 py-1 bg-[#9333EA] text-white rounded-xl text-sm hover:bg-purple-600"
+                    className="px-3 py-1 bg-[#9333EA] text-white rounded-xl text-sm hover:bg-purple-500"
                   >
                     Raw Brand Tone Output
                   </button>
                   <button
                     onClick={() => handleRawDownload('weblayer')}
-                    className="px-3 py-1 bg-[#9333EA] text-white rounded-xl text-sm hover:bg-purple-600"
+                    className="px-3 py-1 bg-[#9333EA] text-white rounded-xl text-sm hover:bg-purple-500"
                   >
                     Raw Weblayer Output
                   </button>
                   <button
                     onClick={() => handleRawDownload('emails')}
-                    className="px-3 py-1 bg-[#9333EA] text-white rounded-xl text-sm hover:bg-purple-600"
+                    className="px-3 py-1 bg-[#9333EA] text-white rounded-xl text-sm hover:bg-purple-500"
                   >
                     Raw Emails Output
                   </button>
