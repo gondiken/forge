@@ -9,14 +9,10 @@ import { systemPrompt as brandTonePrompt } from '@/prompts/brandTone';
 import { systemPrompt as zeroPartyPrompt } from '@/prompts/zeroParty';
 import { systemPrompt as retentionEmailPrompt } from '@/prompts/retentionEmails';
 
-const baseURL = 'https://api.deepseek.com';
-const model = 'deepseek-chat';
-const apiKey = DEEPSEEK_API_KEY;
-
 
 const openai = new OpenAI({
-  apiKey: apiKey,
-  baseURL: baseURL,
+  baseURL: 'https://api.deepseek.com',
+  apiKey: process.env.DEEPSEEK_API_KEY,
   defaultHeaders: {
     'Content-Type': 'application/json'
   },
@@ -26,6 +22,7 @@ const openai = new OpenAI({
 const cleanJsonString = (str: string) => {
   return str.replace(/^```json\n/, '').replace(/\n```$/, '');
 };
+
 
 export default async function handler(
   req: NextApiRequest,
@@ -46,8 +43,8 @@ export default async function handler(
 
   try {
     // Verify API key is present
-    if (!apiConfig.apiKey) {
-      throw new Error('API KEY is not configured');
+    if (!process.env.DEEPSEEK_API_KEY) {
+      throw new Error('DEEPSEEK_API_KEY is not configured');
     }
 
     // Read base template
@@ -66,7 +63,7 @@ export default async function handler(
         { role: 'system', content: brandTonePrompt },
         { role: 'user', content: `Brand: ${brandName}\nInfo: ${brandInfo}` }
       ],
-      model: model
+      model: 'deepseek-chat'
     });
 
     const brandToneContent = brandToneRes.choices[0].message.content;
@@ -99,14 +96,14 @@ Brand Analysis Results:
           { role: 'system', content: zeroPartyPrompt },
           { role: 'user', content: enhancedContext }
         ],
-        model: model
+        model: 'deepseek-chat'
       }),
       openai.chat.completions.create({
         messages: [
           { role: 'system', content: retentionEmailPrompt },
           { role: 'user', content: enhancedContext }
         ],
-        model: model
+        model: 'deepseek-chat'
       })
     ]);
 
