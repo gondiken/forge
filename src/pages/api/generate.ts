@@ -28,22 +28,30 @@ const cleanJsonString = (str: string) => {
 
 type EmailPersona = 'inspiration' | 'nostalgia' | 'social_proof';
 
+type EmailImageOptions = {
+  persona: EmailPersona;
+  category: string;
+} | {
+  type: 'fallback';
+};
+
+// Type guard function to check if options is of email type
+function isEmailOptions(options: EmailImageOptions): options is { persona: EmailPersona; category: string } {
+  return 'persona' in options && 'category' in options;
+}
+
 async function storeEmailImage(
   brandName: string,
   imageBuffer: Buffer,
-  options: {
-    persona: EmailPersona;
-    category: string;
-  } | { type: 'fallback' }
+  options: EmailImageOptions
 ): Promise<string> {
   try {
     const safeBrandName = brandName.toLowerCase().replace(/[^a-z0-9]/g, '-');
     let filename = `demo-assets/${safeBrandName}/`;
     
-    if ('type' in options && options.type === 'fallback') {
+    if (!isEmailOptions(options)) {
       filename += `default-${Date.now()}.png`;
     } else {
-      // TypeScript now knows options has persona and category properties
       const safeCategory = options.category.toLowerCase().replace(/[^a-z0-9]/g, '-');
       filename += `${options.persona}-${safeCategory}-${Date.now()}.png`;
     }
