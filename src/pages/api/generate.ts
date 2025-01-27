@@ -129,13 +129,6 @@ Brand Analysis Results:
       }
     });
 
-    console.log('Data being sent:', {
-      emailsPresent: !!emails,
-      sampleEmail: emails.inspiration,
-      finalJsonEmailsPresent: !!finalJson.emails,
-      sampleFinalEmail: finalJson.emails?.inspiration
-    });
-
     return res.status(200).json({
       brandTone,
       fullJson: finalJson,
