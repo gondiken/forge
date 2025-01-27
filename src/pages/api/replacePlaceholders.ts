@@ -1,10 +1,10 @@
 // src/pages/api/replacePlaceholders.ts
-interface EmailDataPoint {
+export interface EmailDataPoint {
   metric: string;
   text: string;
 }
 
-interface EmailSection {
+export interface EmailSection {
   subject_line: string;
   preheader: string;
   first_paragraph: string;
@@ -16,7 +16,7 @@ interface EmailSection {
   };
 }
 
-interface EmailData {
+export interface EmailData {
   emails: {
     inspiration: EmailSection;
     nostalgia: EmailSection;
@@ -43,14 +43,14 @@ interface BrandData {
   name: string;
 }
 
-interface TemplateData {
+export interface TemplateData {
   brand: BrandData;
   weblayer: WeblayerData;
   emails: EmailData;
   categories: {
-     category1: string;
-     category2: string;
-   };
+    category1: string;
+    category2: string;
+  };
 }
 
 // Type-safe function to get nested values from an object
