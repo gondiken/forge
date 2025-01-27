@@ -1,5 +1,7 @@
 // src/pages/api/generate.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { put } from '@vercel/blob';
+
 import OpenAI from 'openai';
 import path from 'path';
 import fs from 'fs/promises';
@@ -22,6 +24,32 @@ const openai = new OpenAI({
 const cleanJsonString = (str: string) => {
   return str.replace(/^```json\n/, '').replace(/\n```$/, '');
 };
+
+
+async function storeEmailImage(
+  brandName: string, 
+  emailType: 'inspiration' | 'nostalgia' | 'social_proof',
+  imageBuffer: Buffer
+): Promise<string> {
+  try {
+    // Sanitize brand name for use in filename
+    const safeBrandName = brandName.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    
+    const { url } = await put(
+      `demo-assets/${safeBrandName}/${emailType}-${Date.now()}.png`,
+      imageBuffer,
+      {
+        access: 'public',
+        addRandomSuffix: true
+      }
+    );
+    
+    return url;
+  } catch (error) {
+    console.error('Error storing image:', error);
+    throw new Error('Failed to store image');
+  }
+}
 
 
 export default async function handler(
