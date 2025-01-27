@@ -8,10 +8,8 @@ import { replacePlaceholders } from './replacePlaceholders';
 import { systemPrompt as brandTonePrompt } from '@/prompts/brandTone';
 import { systemPrompt as zeroPartyPrompt } from '@/prompts/zeroParty';
 import { systemPrompt as retentionEmailPrompt } from '@/prompts/retentionEmails';
-import type { EmailData } from './replacePlaceholders';
-import type { TemplateData } from './replacePlaceholders';
 
-const PROVIDER = 'deepseek' as 'deepseek' | 'openai';
+const PROVIDER = 'deepseek'; // 'openai' or 'deepseek'
 
 const apiConfig = {
   apiKey: PROVIDER === 'openai' 
@@ -141,7 +139,7 @@ Brand Analysis Results:
         category1: finalCategory1,
         category2: finalCategory2
       }
-    } as TemplateData);
+    });
 
     console.log('Data being sent:', {
       emailsPresent: !!emails,
