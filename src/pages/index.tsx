@@ -1,10 +1,7 @@
 // src/pages/index.tsx
 import { useState } from 'react';
-import { useTheme } from '@/contexts/ThemeContext';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { ContentBox } from '@/components/ContentBox';
-import clsx from 'clsx';
+import { CategoryInputs } from '@/components/ui/CategoryInputs';
 
 // Define all possible stages in our generation process
 type LoadingStage = 
@@ -35,15 +32,14 @@ interface Results {
 }
 
 export default function Home() {
-  // Access our theme context
-  const theme = useTheme();
-
   // State management for form inputs, loading states, and results
   const [brandName, setBrandName] = useState('');
   const [brandInfo, setBrandInfo] = useState('');
   const [loadingStage, setLoadingStage] = useState<LoadingStage>('idle');
   const [results, setResults] = useState<Results | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [category1, setCategory1] = useState('');
+  const [category2, setCategory2] = useState('');
 
   // Convert loading stages into user-friendly messages
   const getLoadingText = (stage: LoadingStage) => {
@@ -86,13 +82,20 @@ export default function Home() {
               return currentStage;
           }
         });
-      }, 4000);
+      }, 3000);
 
       // Make the API call
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ brandName, brandInfo })
+        body: JSON.stringify({ 
+          brandName, 
+          brandInfo,
+          categories: {
+            category1: category1 || null,
+            category2: category2 || null
+          }
+        })
       });
 
       clearInterval(stageInterval);
@@ -154,16 +157,16 @@ export default function Home() {
   };
 
   return (
-    <div className={`min-h-screen bg-${theme.colors.background}`}>
-      <div className="max-w-3xl mx-auto px-4 py-12">
-        <div className={`bg-${theme.colors.surface} rounded-lg shadow-lg p-6 md:p-8`}>
+    <div className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
           {/* Header Section with Logo */}
           <div className="mb-8 flex items-center justify-between">
             <div>
-              <h1 className={`text-3xl font-bold text-${theme.colors.text.primary} mb-2`}>
-                Forge - Demo Asset Generator
+              <h1 className="text-3xl font-bold text-[#581C87] mb-2">
+                Forge - Demo Prep Agent
               </h1>
-              <p className={`text-${theme.colors.text.secondary}`}>
+              <p className="text-[#9333EA]">
                 Generate personalized brand assets and email templates
               </p>
             </div>
@@ -181,48 +184,60 @@ export default function Home() {
           
           {/* Form Section */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            <Input
-              label="Brand Name"
-              value={brandName}
-              onChange={(e) => setBrandName(e.target.value)}
-              required
-            />
+            <div>
+              <label className="block text-sm font-medium text-[#581C87] mb-2">
+                Brand Name
+              </label>
+              <input
+                type="text"
+                value={brandName}
+                onChange={(e) => setBrandName(e.target.value)}
+                className="w-full px-4 py-2 rounded-md border border-purple-300 shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                required
+              />
+            </div>
 
             <div>
-              <label className={`block text-sm font-medium text-${theme.colors.text.secondary} mb-2`}>
+              <label className="block text-sm font-medium text-[#581C87] mb-2">
                 What do you know about the brand?
               </label>
               <textarea
                 value={brandInfo}
                 onChange={(e) => setBrandInfo(e.target.value)}
-                className={clsx(
-                  'w-full px-4 py-2 rounded-md h-32',
-                  'border border-purple-300',
-                  'shadow-sm',
-                  theme.input.focus,
-                  theme.input.background
-                )}
+                className="w-full px-4 py-2 rounded-md border border-purple-300 shadow-sm h-32 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                 placeholder="Enter brand information, mission statement, marketing examples..."
                 required
               />
             </div>
-            <Button
-              type="submit"
-              disabled={loadingStage !== 'idle'}
-              variant="primary"
-            >
-              {loadingStage !== 'idle' ? (
-                <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  {getLoadingText(loadingStage)}
-                </span>
-              ) : (
-                'Generate Assets'
-              )}
-            </Button>
+
+            <div className="flex gap-4">
+              <div className="flex-1 max-w-lg">
+                <CategoryInputs
+                  category1={category1}
+                  setCategory1={setCategory1}
+                  category2={category2}
+                  setCategory2={setCategory2}
+                />
+              </div>
+              
+              <button
+                type="submit"
+                disabled={loadingStage !== 'idle'}
+                className="flex-1 self-end px-6 py-2 bg-[#9333EA] text-white rounded-xl font-medium text-lg hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:bg-purple-400 disabled:cursor-not-allowed transition-colors"
+              >
+                {loadingStage !== 'idle' ? (
+                  <span className="flex items-center justify-center text-white">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    {getLoadingText(loadingStage)}
+                  </span>
+                ) : (
+                  'Generate Assets'
+                )}
+              </button>
+            </div>
           </form>
 
           {/* Error Display */}
@@ -235,28 +250,25 @@ export default function Home() {
           {/* Results Section */}
           {results && (
             <div className="mt-8">
-              <div className={`border-t border-${theme.colors.border} pt-6`}>
-                <h2 className={`text-xl font-semibold text-${theme.colors.text.primary} mb-4`}>
-                  Results
-                </h2>
+              <div className="border-t border-purple-200 pt-6">
+                <h2 className="text-xl font-semibold text-[#581C87] mb-4">Results</h2>
 
                 {/* Download Asset Button */}
-                <Button
+                <button
                   onClick={handleDownload}
-                  variant="primary"
-                  className="flex items-center"
+                  className="flex items-center px-4 py-2 bg-[#9333EA] text-white rounded-xl hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors"
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                   </svg>
-                  Download Asset Library
-                </Button>
+                  Download Initiative JSON
+                </button>
 
                 <br/>
 
                 {/* Brand Tone Analysis */}
                 <div className="space-y-6 mb-6">
-                  <h3 className={`text-sm font-medium text-${theme.colors.text.secondary}`}>
+                  <h3 className="text-sm font-medium text-[#9333EA]">
                     Brand Tone Analysis
                   </h3>
                   
@@ -283,15 +295,24 @@ export default function Home() {
 
                 {/* Raw Output Downloads */}
                 <div className="mb-6 flex flex-wrap gap-2">
-                  {['brandTone', 'weblayer', 'emails'].map((type) => (
-                    <Button
-                      key={type}
-                      onClick={() => handleRawDownload(type as 'brandTone' | 'weblayer' | 'emails')}
-                      variant="secondary"
-                    >
-                      Raw {type.charAt(0).toUpperCase() + type.slice(1)} Output
-                    </Button>
-                  ))}
+                  <button
+                    onClick={() => handleRawDownload('brandTone')}
+                    className="px-3 py-1 bg-[#9333EA] text-white rounded-xl text-sm hover:bg-purple-600"
+                  >
+                    Raw Brand Tone Output
+                  </button>
+                  <button
+                    onClick={() => handleRawDownload('weblayer')}
+                    className="px-3 py-1 bg-[#9333EA] text-white rounded-xl text-sm hover:bg-purple-600"
+                  >
+                    Raw Weblayer Output
+                  </button>
+                  <button
+                    onClick={() => handleRawDownload('emails')}
+                    className="px-3 py-1 bg-[#9333EA] text-white rounded-xl text-sm hover:bg-purple-600"
+                  >
+                    Raw Emails Output
+                  </button>
                 </div>
               </div>
             </div>

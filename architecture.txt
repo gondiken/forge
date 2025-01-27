@@ -1,25 +1,39 @@
-.eslintrc.json
-eslint.config.mjs
-next-env.d.ts
-next.config.ts
-tailwind.config.js
-tailwind.config.ts
-tsconfig.json
-vercel.json
 src/
-  components/
-    ContentBox.tsx
-  pages/
-    _app.tsx
-    index.tsx
-    api/
-      generate.ts
-      replacePlaceholders.ts
-  prompts/
-    brandTone.ts
-    retentionEmails.ts
-    zeroParty.ts
-  styles/
-    globals.css
-  templates/
-    baseTemplate.json
+├── components/
+│   ├── ui/
+│   │   ├── Button.tsx        # Reusable button component
+│   │   └── Input.tsx         # Reusable input component
+│   └── ContentBox.tsx        # Content display component with copy functionality
+│
+├── contexts/
+│   └── ThemeContext.tsx      # Theme context provider (can be removed since we're not using it)
+│
+├── pages/
+│   ├── api/
+│   │   ├── generate.ts       # Main API endpoint for generating assets
+│   │   └── replacePlaceholders.ts # Helper for template replacements
+│   ├── _app.tsx             # Next.js app wrapper
+│   └── index.tsx            # Main page component
+│
+├── prompts/
+│   ├── brandTone.ts         # System prompt for brand tone analysis
+│   ├── retentionEmails.ts   # System prompt for email generation
+│   └── zeroParty.ts         # System prompt for weblayer questions
+│
+├── styles/
+│   ├── globals.css          # Global styles
+│   └── theme.ts             # Theme definitions (can be removed)
+│
+└── templates/
+    └── baseTemplate.json    # Base JSON template for asset generation
+
+
+Configuration files in root:
+├── .eslintrc.json          # ESLint configuration
+├── eslint.config.mjs       # Additional ESLint config
+├── next.config.ts          # Next.js configuration
+├── next-env.d.ts          # Next.js TypeScript definitions
+├── tailwind.config.js     # Tailwind configuration
+├── tailwind.config.ts     # TypeScript version of Tailwind config
+├── tsconfig.json          # TypeScript configuration
+└── vercel.json           # Vercel deployment configuration
