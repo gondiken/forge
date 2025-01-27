@@ -38,12 +38,12 @@ async function storeEmailImage(
 ): Promise<string> {
   try {
     const safeBrandName = brandName.toLowerCase().replace(/[^a-z0-9]/g, '-');
-    
     let filename = `demo-assets/${safeBrandName}/`;
     
     if ('type' in options && options.type === 'fallback') {
       filename += `default-${Date.now()}.png`;
     } else {
+      // TypeScript now knows options has persona and category properties
       const safeCategory = options.category.toLowerCase().replace(/[^a-z0-9]/g, '-');
       filename += `${options.persona}-${safeCategory}-${Date.now()}.png`;
     }
