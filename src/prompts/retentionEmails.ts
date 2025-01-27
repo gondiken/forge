@@ -7,6 +7,7 @@ You will receive natural language input about:
 - Industry context
 - Tone of voice preferences
 - Example marketing communications
+- Two example product or service categories (you may only use them for hero image prompts)
 
 All of them are optional inputs, if you don't get anything, use public info you have about the brand.
 
@@ -30,14 +31,15 @@ ULTIMATE GOAL
 Not your goal, but the user's ultimate goal, is to have emails that consist of:
 - Subject line
 - Pre-header
-- Hero image
+- Hero images             // Your goal is only to create image prompts for an image gen AI. Avoid creating prompts that may lead the image gen AI to create an image with text or humans in it. Avoid brand name, or human figure for example. Max 350 characters
 - First title (Greeting)
 - First paragraph
-- Second title // personalized part
-- Second subtitle // explaining the achievement/metric/history that's personalized to the customer (but also considering what this brand specifically might communicate)
+- Second title            // personalized part
+- Second subtitle         // explaining the achievement/metric/history that's personalized to the customer (but also considering what this brand specifically might communicate)
 - Metric 1, Metric 2
-- Mission // Brand's mission infused in a statement: Since you joined us a few years ago, we continued our legacy of [MISSION]. For example: Since you joined us a few years ago, we continued our legacy of sustainable fashion.
+- Mission                 // Brand's mission infused in a statement: Since you joined us a few years ago, we continued our legacy of [MISSION]. For example: Since you joined us a few years ago, we continued our legacy of sustainable fashion.
 - Mission related to product // Brand's mission related to their products: We ensured that [MISSION RELATED TO PRODUCTS]. For example: We ensured that each piece in our new collection is thoughtfully crafted using organic materials and responsible practices.
+- Mission image
 
 OUTPUT SCHEMA:
 {
@@ -45,7 +47,8 @@ OUTPUT SCHEMA:
     "inspiration": {
       "subject_line": string,           // max 50 chars
       "preheader": string,              // max 100 chars
-      "hero_image_description": string,
+      "hero_image_prompt1": string,     // prompt for inspiration-seeking persona and category 1 from input
+      "hero_image_prompt2": string,     // prompt for inspiration-seeking persona and category 2 from input
       "greeting": string,               // must include {{customer.first_name}}
       "first_paragraph": string,
       "second_title": string,           // something that can be built with the data the brand has on the customer. Example: "Your Journey With Us"
@@ -64,7 +67,8 @@ OUTPUT SCHEMA:
     "nostalgia": {
       "subject_line": string,
       "preheader": string,
-      "hero_image_description": string,
+      "hero_image_prompt1": string,     // prompt for nostalgia/traditional persona and category 1 from input
+      "hero_image_prompt2": string,     // prompt for nostalgia/traditional persona and category 2 from input
       "greeting": string,
       "first_paragraph": string,
       "second_title": string,           // something that can be built with the data the brand has on the customer. Example: "Our History Together"
@@ -83,7 +87,8 @@ OUTPUT SCHEMA:
     "social_proof": {
       "subject_line": string,
       "preheader": string,
-      "hero_image_description": string,
+      "hero_image_prompt1": string,     // prompt for extravert/social persona and category 1 from input
+      "hero_image_prompt2": string,     // prompt for extravert/social persona and category 2 from input
       "greeting": string,
       "first_paragraph": string,
       "second_title": string,           // something that can be built with the data the brand has on the customer. Example: "Our Community"
@@ -102,7 +107,8 @@ OUTPUT SCHEMA:
   },
   "missions": {
     "general": string,                // a very short version of mission which will be used in a statement that starts with "Since you joined us a few years ago, we continued our legacy of " (example: "sustainable fashion")
-    "product_focus": string           // how the mission related to the new products/services in a statement that starts with "We ensured that" (example: "each piece in our new collection is thoughtfully crafted using organic materials and responsible practices")
+    "product_focus": string,          // how the mission related to the new products/services in a statement that starts with "We ensured that" (example: "each piece in our new collection is thoughtfully crafted using organic materials and responsible practices")
+    "mission_image_prompt"            // a prompt that will be fed to an image generation AI that will demonstrate the mission of the brand. Avoid text, human, figure references. Max 350 characters
   },
   "metadata": {
     "version": "1.0",
@@ -118,7 +124,8 @@ Purpose: Re-engage customers by reconnecting them with their initial aspirationa
 Content Guidelines:
 - Subject line: Address unfulfilled aspirations or forgotten goals
 - Pre-header: Remind of progress made and potential ahead
-- Hero image prompt: Create a prompt for an image generate AI tool, which will create an image that reignites initial enthusiasm with the customer
+- Hero image prompts: Create prompts for an image generate AI tool, which will create an image that reignites initial enthusiasm with the customer
+- Ensure that hero_image_prompt1 and hero_image_prompt2 are differentiated through the specific product or service that comes from inputs
 - First paragraph: Acknowledge current challenges while reinforcing shared values
 - Second title: Focus on renewed commitment to customer's goals
 - Data points focus: Progress made, impact achieved, unrealized potential
@@ -128,7 +135,8 @@ Purpose: Remind customers of their established relationship value and historical
 Content Guidelines:
 - Subject line: Emphasize shared history and proven reliability
 - Pre-header: Highlight long-term relationship benefits
-- Hero image prompt: Create a prompt for an image generate AI tool, which will create an image that conveys stability and trusted partnership
+- Hero image prompt: Create prompts for an image generate AI tool, which will create an image that conveys stability and trusted partnership
+- Ensure that hero_image_prompt1 and hero_image_prompt2 are differentiated through the specific product or service that comes from inputs
 - First paragraph: Acknowledge loyalty while addressing potential concerns
 - Second title: Emphasize relationship strength
 - Data points focus: Historical satisfaction, relationship milestones, accumulated benefits
@@ -138,7 +146,8 @@ Purpose: Address FOMO and reinforce community belonging to prevent churn
 Content Guidelines:
 - Subject line: Emphasize community membership value
 - Pre-header: Highlight collective benefits and shared success
-- Hero image prompt: Create a prompt for an image generate AI tool, which will create an image that conveys the idea of vibrant community engagement
+- Hero image prompt: Create prompts for an image generate AI tool, which will create an image that conveys the idea of vibrant community engagement
+- Ensure that hero_image_prompt1 and hero_image_prompt2 are differentiated through the specific product or service that comes from inputs
 - First paragraph: Address potential disconnection while reinforcing community value
 - Second title: Focus on collective achievements
 - Data points focus: Community engagement, collective milestones, shared success stories
@@ -161,7 +170,7 @@ TONE GUIDELINES FOR CHURN RISK:
 
 CONSTRAINTS:
 - No HTML markup in content
-- Hero image prompts: They should avoid creating a situation where the image gen AI may create an image with text or humans in it. Max 350 characters
+- Image prompts: Avoid creating a prompt that may lead the image gen AI to create an image with text or humans in it. Avoid brand name, or human figure for example. Max 350 characters
 - Subject lines: max 50 characters
 - Pre-headers: max 100 characters
 - First paragraph: max 300 characters

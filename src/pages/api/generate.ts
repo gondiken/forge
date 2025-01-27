@@ -26,23 +26,32 @@ const cleanJsonString = (str: string) => {
 };
 
 
+type EmailPersona = 'inspiration' | 'nostalgia' | 'social_proof';
+
 async function storeEmailImage(
-  brandName: string, 
-  emailType: 'inspiration' | 'nostalgia' | 'social_proof',
-  imageBuffer: Buffer
+  brandName: string,
+  imageBuffer: Buffer,
+  options: {
+    persona: EmailPersona;
+    category: string;
+  } | { type: 'fallback' }
 ): Promise<string> {
   try {
-    // Sanitize brand name for use in filename
     const safeBrandName = brandName.toLowerCase().replace(/[^a-z0-9]/g, '-');
     
-    const { url } = await put(
-      `demo-assets/${safeBrandName}/${emailType}-${Date.now()}.png`,
-      imageBuffer,
-      {
-        access: 'public',
-        addRandomSuffix: true
-      }
-    );
+    let filename = `demo-assets/${safeBrandName}/`;
+    
+    if ('type' in options && options.type === 'fallback') {
+      filename += `default-${Date.now()}.png`;
+    } else {
+      const safeCategory = options.category.toLowerCase().replace(/[^a-z0-9]/g, '-');
+      filename += `${options.persona}-${safeCategory}-${Date.now()}.png`;
+    }
+
+    const { url } = await put(filename, imageBuffer, {
+      access: 'public',
+      addRandomSuffix: true
+    });
     
     return url;
   } catch (error) {
@@ -50,7 +59,6 @@ async function storeEmailImage(
     throw new Error('Failed to store image');
   }
 }
-
 
 export default async function handler(
   req: NextApiRequest,
@@ -113,6 +121,8 @@ Brand Analysis Results:
 - Tone of Voice: ${brandTone.toneOfVoice}
 - Key Brand Words: ${brandTone.favoriteKeywords}
 - Words to Avoid: ${brandTone.wordsToAvoid}
+- Category 1: ${finalCategory1}
+- Category 2: ${finalCategory2}
     `.trim();
 
     // Step 2: Now we can make the weblayer and email calls in parallel
