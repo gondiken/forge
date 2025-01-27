@@ -87,7 +87,9 @@ export default function Home() {
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ brandName, brandInfo })
+        body: JSON.stringify({ brandName, brandInfo }),
+        category1,
+        category2
       });
 
 

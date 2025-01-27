@@ -44,8 +44,8 @@ export default async function handler(
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { brandName, brandInfo } = req.body;
-  
+  const { brandName, brandInfo, category1, category2 } = req.body;
+
   if (!brandName || !brandInfo) {
     return res.status(400).json({ 
       error: 'Missing required fields',
@@ -78,13 +78,14 @@ export default async function handler(
       model: apiConfig.model
     });
 
-
     const brandToneContent = brandToneRes.choices[0].message.content;
     if (!brandToneContent) {
       throw new Error('Empty response from brand tone API');
     }
 
     const brandTone = JSON.parse(cleanJsonString(brandToneContent));
+    const finalCategory1 = category1?.trim() || brandTone.category1;
+    const finalCategory2 = category2?.trim() || brandTone.category2;
     
     // Create enhanced context using brand tone results
     const enhancedContext = `
@@ -133,9 +134,13 @@ Brand Analysis Results:
     const finalJson = replacePlaceholders(baseTemplate, {
       brand: { name: brandName },
       weblayer,
-      emails
+      emails,
+      categories: {
+        category1: finalCategory1,
+        category2: finalCategory2
+      }
     });
-    
+
     console.log('Data being sent:', {
       emailsPresent: !!emails,
       sampleEmail: emails.inspiration,

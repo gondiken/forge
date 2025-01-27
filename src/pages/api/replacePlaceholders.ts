@@ -47,6 +47,10 @@ interface TemplateData {
   brand: BrandData;
   weblayer: WeblayerData;
   emails: EmailData;
+  categories: {
+     category1: string;
+     category2: string;
+   };
 }
 
 // Type-safe function to get nested values from an object
@@ -155,7 +159,11 @@ const replacePlaceholders = (template: Record<string, unknown>, data: TemplateDa
 
     // Mission replacements
     '#email1_mission#': getEmailValue('emails.missions.general'),
-    '#email1_mission_on_product#': getEmailValue('emails.missions.product_focus'),    
+    '#email1_mission_on_product#': getEmailValue('emails.missions.product_focus'),
+
+    '#category1#': data.categories.category1,
+    '#category2#': data.categories.category2,
+
     '#brand#': data.brand.name
   };
 

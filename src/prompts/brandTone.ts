@@ -31,6 +31,13 @@ Analyze the provided content and return the following in JSON format:
 - Include explanation for each word if confidence score < 0.8
 - Format: lowercase, comma-separated list
 
+5/6. Two categories
+- Based on what this brand offers as a product or service, and how they would offer them differently to different customers/users
+- Less than 20 characters
+- Category #1
+- Category #2
+
+
 ERROR HANDLING:
 - If any required input is missing, return error code 400
 - If brand messaging is inconsistent, highlight contradictions
@@ -43,7 +50,9 @@ Analyze the content and report back in exactly this format:
   "missionStatement": "paragraph for Mission Statement",
   "toneOfVoice": "paragraph for Tone of Voice with each word separated by commas",
   "favoriteKeywords": "paragraph for Favorite Keywords with each word separated by commas",
-  "wordsToAvoid": "paragraph for Words to Avoid with each word separated by commas"
+  "wordsToAvoid": "paragraph for Words to Avoid with each word separated by commas",
+  "category1": "category #1",
+  "category2": "category #2"
 }
 
 {
@@ -53,7 +62,9 @@ Example output:
   "missionStatement": "Banana Republic is a storyteller's brand, outfitting the modern explorer with high-quality, expertly crafted collections and experiences to inspire and enrich their journeys. Our vision is to create a more sustainable future for our customers, communities, and planet by harnessing the power of our brand to be a force for positive change. We are doing our part to source high-quality and responsible materials, reduce waste and extend the product lifecycle, and improve the well-being of our business partners across the globe",
   "toneOfVoice": "confident, innovative, friendly, approachable, expert, forward-thinking, warm, inclusive",
   "favoriteKeywords": "empower, transform, together, future, innovation, breakthrough, community, support, growth",
-  "wordsToAvoid": "basic, simple, old-fashioned, complicated, confusing, traditional, outdated, complex"
+  "wordsToAvoid": "basic, simple, old-fashioned, complicated, confusing, traditional, outdated, complex",
+  "category1": "Womens Dresses",
+  "category2": "Mens Sweaters"
 }
 
 `;
