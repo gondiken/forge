@@ -12,13 +12,7 @@ import { systemPrompt as retentionEmailPrompt } from '@/prompts/retentionEmails'
 type Provider = 'openai' | 'deepseek';
 const PROVIDER: Provider = 'deepseek';
 
-interface ApiConfig {
-  apiKey: string | undefined;
-  baseURL: string;
-  model: string;
-}
-
-const apiConfig: ApiConfig = {
+const apiConfig = {
   apiKey: PROVIDER === 'openai' 
     ? process.env.OPENAI_API_KEY 
     : process.env.DEEPSEEK_API_KEY,
@@ -29,7 +23,6 @@ const apiConfig: ApiConfig = {
     ? 'gpt-4-turbo-preview'
     : 'deepseek-chat'
 };
-
 
 const openai = new OpenAI({
   apiKey: apiConfig.apiKey,
