@@ -9,9 +9,16 @@ import { systemPrompt as brandTonePrompt } from '@/prompts/brandTone';
 import { systemPrompt as zeroPartyPrompt } from '@/prompts/zeroParty';
 import { systemPrompt as retentionEmailPrompt } from '@/prompts/retentionEmails';
 
-const PROVIDER = 'deepseek'; // or 'deepseek'
+type Provider = 'openai' | 'deepseek';
+const PROVIDER: Provider = 'deepseek';
 
-const apiConfig = {
+interface ApiConfig {
+  apiKey: string | undefined;
+  baseURL: string;
+  model: string;
+}
+
+const apiConfig: ApiConfig = {
   apiKey: PROVIDER === 'openai' 
     ? process.env.OPENAI_API_KEY 
     : process.env.DEEPSEEK_API_KEY,
@@ -22,6 +29,7 @@ const apiConfig = {
     ? 'gpt-4-turbo-preview'
     : 'deepseek-chat'
 };
+
 
 const openai = new OpenAI({
   apiKey: apiConfig.apiKey,
