@@ -9,13 +9,27 @@ import { systemPrompt as brandTonePrompt } from '@/prompts/brandTone';
 import { systemPrompt as zeroPartyPrompt } from '@/prompts/zeroParty';
 import { systemPrompt as retentionEmailPrompt } from '@/prompts/retentionEmails';
 
+const PROVIDER = 'deepseek'; // or 'deepseek'
+
+const apiConfig = {
+  apiKey: PROVIDER === 'openai' 
+    ? process.env.OPENAI_API_KEY 
+    : process.env.DEEPSEEK_API_KEY,
+  baseURL: PROVIDER === 'openai'
+    ? 'https://api.openai.com/v1'
+    : 'https://api.deepseek.com',
+  model: PROVIDER === 'openai'
+    ? 'gpt-4-turbo-preview'
+    : 'deepseek-chat'
+};
+
 const openai = new OpenAI({
-  baseURL: 'https://api.deepseek.com',
-  apiKey: process.env.DEEPSEEK_API_KEY,
+  apiKey: apiConfig.apiKey,
+  baseURL: apiConfig.baseURL,
   defaultHeaders: {
     'Content-Type': 'application/json'
   },
-  timeout: 25000  // Reduced timeout since we're making sequential calls
+  timeout: 20000
 });
 
 const cleanJsonString = (str: string) => {
@@ -41,8 +55,8 @@ export default async function handler(
 
   try {
     // Verify API key is present
-    if (!process.env.DEEPSEEK_API_KEY) {
-      throw new Error('DEEPSEEK_API_KEY is not configured');
+    if (!apiConfig.apiKey) {
+      throw new Error('API KEY is not configured');
     }
 
     // Read base template
@@ -61,8 +75,9 @@ export default async function handler(
         { role: 'system', content: brandTonePrompt },
         { role: 'user', content: `Brand: ${brandName}\nInfo: ${brandInfo}` }
       ],
-      model: 'deepseek-chat'
+      model: apiConfig.model
     });
+
 
     const brandToneContent = brandToneRes.choices[0].message.content;
     if (!brandToneContent) {
@@ -92,14 +107,14 @@ Brand Analysis Results:
           { role: 'system', content: zeroPartyPrompt },
           { role: 'user', content: enhancedContext }
         ],
-        model: 'deepseek-chat'
+        model: apiConfig.model
       }),
       openai.chat.completions.create({
         messages: [
           { role: 'system', content: retentionEmailPrompt },
           { role: 'user', content: enhancedContext }
         ],
-        model: 'deepseek-chat'
+        model: apiConfig.model
       })
     ]);
 
@@ -119,6 +134,13 @@ Brand Analysis Results:
       brand: { name: brandName },
       weblayer,
       emails
+    });
+    
+    console.log('Data being sent:', {
+      emailsPresent: !!emails,
+      sampleEmail: emails.inspiration,
+      finalJsonEmailsPresent: !!finalJson.emails,
+      sampleFinalEmail: finalJson.emails?.inspiration
     });
 
     return res.status(200).json({

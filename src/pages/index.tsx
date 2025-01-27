@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { ContentBox } from '@/components/ContentBox';
 import { CategoryInputs } from '@/components/ui/CategoryInputs';
+import { Button } from '@/components/ui/Button';
 
 // Define all possible stages in our generation process
 type LoadingStage = 
@@ -66,7 +67,6 @@ export default function Home() {
     setLoadingStage('analyzing-brand');
 
     try {
-      // Simulate progression through stages while the API call is happening
       const stageInterval = setInterval(() => {
         setLoadingStage(currentStage => {
           switch (currentStage) {
@@ -82,21 +82,14 @@ export default function Home() {
               return currentStage;
           }
         });
-      }, 3000);
+      }, 5000);
 
-      // Make the API call
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          brandName, 
-          brandInfo,
-          categories: {
-            category1: category1 || null,
-            category2: category2 || null
-          }
-        })
+        body: JSON.stringify({ brandName, brandInfo })
       });
+
 
       clearInterval(stageInterval);
 
@@ -121,6 +114,7 @@ export default function Home() {
       setLoadingStage('idle');
     }
   };
+
 
   // Handle downloads of raw LLM response JSONs
   const handleRawDownload = (type: 'brandTone' | 'weblayer' | 'emails') => {
@@ -164,7 +158,7 @@ export default function Home() {
           <div className="mb-8 flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-[#581C87] mb-2">
-                Forge - Demo Prep Agent
+                Forge. Demo Prep Agent.
               </h1>
               <p className="text-[#9333EA]">
                 Generate personalized brand assets and email templates

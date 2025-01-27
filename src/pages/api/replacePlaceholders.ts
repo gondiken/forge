@@ -100,9 +100,13 @@ const replacePlaceholders = (template: Record<string, unknown>, data: TemplateDa
   // Helper function to safely get email-related data
   const getEmailValue = (path: string): string => {
       const value = getNestedValue(data, path);
+      console.log(`Getting email value for path: ${path}`, {
+          value,
+          dataExists: !!data,
+          emailsExist: !!(data as any).emails
+      });
       return value ?? '';
   };
-
 
   // Define mappings with correct paths and types
   const replacements: Record<string, string> = {
@@ -119,39 +123,39 @@ const replacePlaceholders = (template: Record<string, unknown>, data: TemplateDa
     '#zeroparty_q3#': getNestedValue(data, 'weblayer.questions[2].category') || '',
 
     // Email replacements using the helper function
-    '#email1_subject#': getEmailValue('emails.inspiration.subject_line'),
-    '#email1_preheader#': getEmailValue('emails.inspiration.preheader'),
-    '#email1_paragraph1#': getEmailValue('emails.inspiration.first_paragraph'),
-    '#email1_title2#': getEmailValue('emails.inspiration.second_title'),
-    '#email1_subtitle2#': getEmailValue('emails.inspiration.second_subtitle'),
-    '#email1_data1#': getEmailValue('emails.inspiration.data_points.first.text'),
-    '#email1_datatag1#': getEmailValue('emails.inspiration.data_points.first.metric'),
-    '#email1_data2#': getEmailValue('emails.inspiration.data_points.second.text'),
-    '#email1_datatag2#': getEmailValue('emails.inspiration.data_points.second.metric'),
+    '#email1_subject#': getEmailValue('emails.emails.inspiration.subject_line'),
+    '#email1_preheader#': getEmailValue('emails.emails.inspiration.preheader'),
+    '#email1_paragraph1#': getEmailValue('emails.emails.inspiration.first_paragraph'),
+    '#email1_title2#': getEmailValue('emails.emails.inspiration.second_title'),
+    '#email1_subtitle2#': getEmailValue('emails.emails.inspiration.second_subtitle'),
+    '#email1_data1#': getEmailValue('emails.emails.inspiration.data_points.first.text'),
+    '#email1_datatag1#': getEmailValue('emails.emails.inspiration.data_points.first.metric'),
+    '#email1_data2#': getEmailValue('emails.emails.inspiration.data_points.second.text'),
+    '#email1_datatag2#': getEmailValue('emails.emails.inspiration.data_points.second.metric'),
 
-    '#email2_subject#': getEmailValue('emails.nostalgia.subject_line'),
-    '#email2_preheader#': getEmailValue('emails.nostalgia.preheader'),
-    '#email2_paragraph1#': getEmailValue('emails.nostalgia.first_paragraph'),
-    '#email2_title2#': getEmailValue('emails.nostalgia.second_title'),
-    '#email2_subtitle2#': getEmailValue('emails.nostalgia.second_subtitle'),
-    '#email2_data1#': getEmailValue('emails.nostalgia.data_points.first.text'),
-    '#email2_datatag1#': getEmailValue('emails.nostalgia.data_points.first.metric'),
-    '#email2_data2#': getEmailValue('emails.nostalgia.data_points.second.text'),
-    '#email2_datatag2#': getEmailValue('emails.nostalgia.data_points.second.metric'),
+    '#email2_subject#': getEmailValue('emails.emails.nostalgia.subject_line'),
+    '#email2_preheader#': getEmailValue('emails.emails.nostalgia.preheader'),
+    '#email2_paragraph1#': getEmailValue('emails.emails.nostalgia.first_paragraph'),
+    '#email2_title2#': getEmailValue('emails.emails.nostalgia.second_title'),
+    '#email2_subtitle2#': getEmailValue('emails.emails.nostalgia.second_subtitle'),
+    '#email2_data1#': getEmailValue('emails.emails.nostalgia.data_points.first.text'),
+    '#email2_datatag1#': getEmailValue('emails.emails.nostalgia.data_points.first.metric'),
+    '#email2_data2#': getEmailValue('emails.emails.nostalgia.data_points.second.text'),
+    '#email2_datatag2#': getEmailValue('emails.emails.nostalgia.data_points.second.metric'),
 
-    '#email3_subject#': getEmailValue('emails.social_proof.subject_line'),
-    '#email3_preheader#': getEmailValue('emails.social_proof.preheader'),
-    '#email3_paragraph1#': getEmailValue('emails.social_proof.first_paragraph'),
-    '#email3_title2#': getEmailValue('emails.social_proof.second_title'),
-    '#email3_subtitle2#': getEmailValue('emails.social_proof.second_subtitle'),
-    '#email3_data1#': getEmailValue('emails.social_proof.data_points.first.text'),
-    '#email3_datatag1#': getEmailValue('emails.social_proof.data_points.first.metric'),
-    '#email3_data2#': getEmailValue('emails.social_proof.data_points.second.text'),
-    '#email3_datatag2#': getEmailValue('emails.social_proof.data_points.second.metric'),
+    '#email3_subject#': getEmailValue('emails.emails.social_proof.subject_line'),
+    '#email3_preheader#': getEmailValue('emails.emails.social_proof.preheader'),
+    '#email3_paragraph1#': getEmailValue('emails.emails.social_proof.first_paragraph'),
+    '#email3_title2#': getEmailValue('emails.emails.social_proof.second_title'),
+    '#email3_subtitle2#': getEmailValue('emails.emails.social_proof.second_subtitle'),
+    '#email3_data1#': getEmailValue('emails.emails.social_proof.data_points.first.text'),
+    '#email3_datatag1#': getEmailValue('emails.emails.social_proof.data_points.first.metric'),
+    '#email3_data2#': getEmailValue('emails.emails.social_proof.data_points.second.text'),
+    '#email3_datatag2#': getEmailValue('emails.emails.social_proof.data_points.second.metric'),
 
-    '#email1_mission#': getEmailValue('missions.general'),
-    '#email1_mission_on_product#': getEmailValue('missions.product_focus'),
-    
+    // Mission replacements
+    '#email1_mission#': getEmailValue('emails.missions.general'),
+    '#email1_mission_on_product#': getEmailValue('emails.missions.product_focus'),    
     '#brand#': data.brand.name
   };
 

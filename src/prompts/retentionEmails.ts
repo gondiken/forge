@@ -34,7 +34,7 @@ Not your goal, but the user's ultimate goal, is to have emails that consist of:
 - First title (Greeting)
 - First paragraph
 - Second title // personalized part
-- Second subtitle // explaining the achievement/metric/history that's personalized to the customer
+- Second subtitle // explaining the achievement/metric/history that's personalized to the customer (but also considering what this brand specifically might communicate)
 - Metric 1, Metric 2
 - Mission // Brand's mission infused in a statement: Since you joined us a few years ago, we continued our legacy of [MISSION]. For example: Since you joined us a few years ago, we continued our legacy of sustainable fashion.
 - Mission related to product // Brand's mission related to their products: We ensured that [MISSION RELATED TO PRODUCTS]. For example: We ensured that each piece in our new collection is thoughtfully crafted using organic materials and responsible practices.
